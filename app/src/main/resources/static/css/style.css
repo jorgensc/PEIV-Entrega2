@@ -1,0 +1,73 @@
+/* estilos do JCondo */
+
+:root {
+    --jc-primary: #1e3a5f;
+    --jc-primary-dark: #14273f;
+    --jc-accent: #0d6efd;
+    --jc-bg: #f4f6f9;
+}
+
+body {
+    background-color: var(--jc-bg);
+    font-family: "Segoe UI", system-ui, -apple-system, sans-serif;
+}
+
+/* navbar */
+.jc-navbar {
+    background: linear-gradient(90deg, var(--jc-primary-dark), var(--jc-primary));
+}
+
+.jc-navbar .nav-link {
+    transition: opacity 0.2s;
+}
+
+.jc-navbar .nav-link:hover {
+    opacity: 0.8;
+}
+
+/* cards */
+.jc-card {
+    border: none;
+    border-radius: 0.75rem;
+    box-shadow: 0 2px 12px rgba(0, 0, 0, 0.08);
+    overflow: hidden;
+}
+
+/* tabela da listagem */
+.jc-table thead {
+    background-color: var(--jc-primary);
+    color: #fff;
+}
+
+.jc-table thead th {
+    font-weight: 600;
+    border: none;
+    white-space: nowrap;
+}
+
+.jc-table tbody tr:hover {
+    background-color: #eef4fb;
+}
+
+/* formulario */
+.form-label {
+    font-weight: 600;
+    color: var(--jc-primary-dark);
+}
+
+.input-group-text {
+    background-color: #fff;
+    color: var(--jc-primary);
+}
+
+
+.btn-primary {
+    background-color: var(--jc-accent);
+    border-color: var(--jc-accent);
+}
+
+/* rodape */
+.jc-footer {
+    background-color: #fff;
+    border-top: 1px solid #e5e7eb;
+}
