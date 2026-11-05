@@ -1,0 +1,17 @@
+# maven
+app/target/
+
+# IDEs
+.idea/
+.vscode/
+*.iml
+.settings/
+.project
+.classpath
+
+# sistema
+.DS_Store
+Thumbs.db
+
+# arquivos locais com senha
+.env
