@@ -15,3 +15,6 @@ Thumbs.db
 
 # arquivos locais com senha
 .env
+
+# banco H2 do perfil local
+app/data/
