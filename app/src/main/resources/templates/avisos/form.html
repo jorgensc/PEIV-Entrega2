@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="pt-BR" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{layout :: head(${titulo})}"></head>
+<body class="jc-body">
+<div class="jc-app">
+    <aside th:replace="~{layout :: sidebar('avisos')}"></aside>
+
+    <div class="jc-conteudo">
+        <header th:replace="~{layout :: topo(${titulo})}"></header>
+
+        <main class="jc-main">
+            <div class="row justify-content-center">
+                <div class="col-12 col-md-10 col-xl-8">
+
+                    <a th:href="@{/avisos}" class="d-inline-flex align-items-center gap-1 text-decoration-none mb-3">
+                        <i class="bi bi-arrow-left"></i>Voltar para avisos
+                    </a>
+
+                    <div class="jc-card">
+                        <div class="jc-card-topo">
+                            <h2 class="h5"><i class="bi bi-megaphone me-2 text-primary"></i><span th:text="${titulo}">Novo aviso</span></h2>
+                        </div>
+                        <div class="jc-card-corpo">
+                            <form th:action="@{/avisos/salvar}" th:object="${aviso}" method="post" novalidate>
+                                <input type="hidden" th:field="*{id}">
+
+                                <div class="mb-3">
+                                    <label for="titulo" class="form-label">Título <span class="text-danger">*</span></label>
+                                    <input type="text" id="titulo" th:field="*{titulo}" class="form-control" maxlength="120"
+                                           th:classappend="${#fields.hasErrors('titulo')} ? 'is-invalid'"
+                                           placeholder="Ex.: Manutenção dos elevadores">
+                                    <div class="invalid-feedback" th:errors="*{titulo}"></div>
+                                </div>
+
+                                <div class="row">
+                                    <div class="col-sm-6 mb-3">
+                                        <label for="categoria" class="form-label">Categoria <span class="text-danger">*</span></label>
+                                        <select id="categoria" th:field="*{categoria}" class="form-select"
+                                                th:classappend="${#fields.hasErrors('categoria')} ? 'is-invalid'">
+                                            <option th:each="c : ${categorias}" th:value="${c}" th:text="${c.descricao}">Geral</option>
+                                        </select>
+                                        <div class="invalid-feedback" th:errors="*{categoria}"></div>
+                                    </div>
+                                    <div class="col-sm-6 mb-3 d-flex align-items-sm-end">
+                                        <div class="form-check form-switch fs-6 mb-sm-2">
+                                            <input class="form-check-input" type="checkbox" role="switch" id="importante" th:field="*{importante}">
+                                            <label class="form-check-label" for="importante">Importante (fixar no topo)</label>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="mb-4">
+                                    <label for="conteudo" class="form-label">Conteúdo <span class="text-danger">*</span></label>
+                                    <textarea id="conteudo" th:field="*{conteudo}" class="form-control" rows="7" maxlength="2000"
+                                              th:classappend="${#fields.hasErrors('conteudo')} ? 'is-invalid'"
+                                              placeholder="Escreva o comunicado para os moradores"></textarea>
+                                    <div class="invalid-feedback" th:errors="*{conteudo}"></div>
+                                    <div class="form-text">Até 2000 caracteres.</div>
+                                </div>
+
+                                <div class="jc-form-acoes">
+                                    <a th:href="@{/avisos}" class="btn btn-outline-secondary"><i class="bi bi-x-lg me-1"></i>Cancelar</a>
+                                    <button type="submit" class="btn btn-primary px-4"><i class="bi bi-send me-1"></i>Publicar</button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+
+        <footer th:replace="~{layout :: rodape}"></footer>
+    </div>
+</div>
+<th:block th:replace="~{layout :: scripts}"></th:block>
+</body>
+</html>

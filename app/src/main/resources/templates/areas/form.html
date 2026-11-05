@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="pt-BR" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{layout :: head(${titulo})}"></head>
+<body class="jc-body">
+<div class="jc-app">
+    <aside th:replace="~{layout :: sidebar('areas')}"></aside>
+
+    <div class="jc-conteudo">
+        <header th:replace="~{layout :: topo(${titulo})}"></header>
+
+        <main class="jc-main">
+            <div class="row justify-content-center">
+                <div class="col-12 col-md-10 col-xl-7">
+
+                    <a th:href="@{/areas}" class="d-inline-flex align-items-center gap-1 text-decoration-none mb-3">
+                        <i class="bi bi-arrow-left"></i>Voltar para áreas
+                    </a>
+
+                    <div th:replace="~{layout :: alertas}"></div>
+
+                    <div class="jc-card">
+                        <div class="jc-card-topo">
+                            <h2 class="h5"><i class="bi bi-house-gear me-2 text-primary"></i><span th:text="${titulo}">Nova área</span></h2>
+                        </div>
+                        <div class="jc-card-corpo">
+                            <form th:action="@{/areas/salvar}" th:object="${area}" method="post" novalidate>
+                                <input type="hidden" th:field="*{id}">
+
+                                <div class="mb-3">
+                                    <label for="nome" class="form-label">Nome <span class="text-danger">*</span></label>
+                                    <input type="text" id="nome" th:field="*{nome}" class="form-control" maxlength="60"
+                                           th:classappend="${#fields.hasErrors('nome')} ? 'is-invalid'" placeholder="Ex.: Piscina">
+                                    <div class="invalid-feedback" th:errors="*{nome}"></div>
+                                </div>
+
+                                <div class="mb-3">
+                                    <label for="descricao" class="form-label">Descrição</label>
+                                    <input type="text" id="descricao" th:field="*{descricao}" class="form-control" maxlength="255"
+                                           placeholder="O que tem no espaço">
+                                </div>
+
+                                <div class="row">
+                                    <div class="col-12 col-sm-4 mb-3">
+                                        <label for="capacidade" class="form-label">Capacidade <span class="text-danger">*</span></label>
+                                        <input type="number" id="capacidade" th:field="*{capacidade}" class="form-control" min="1" max="500"
+                                               th:classappend="${#fields.hasErrors('capacidade')} ? 'is-invalid'">
+                                        <div class="invalid-feedback" th:errors="*{capacidade}"></div>
+                                    </div>
+                                    <div class="col-6 col-sm-4 mb-3">
+                                        <label for="horaAbertura" class="form-label">Abre às <span class="text-danger">*</span></label>
+                                        <input type="time" id="horaAbertura" th:field="*{horaAbertura}" class="form-control"
+                                               th:classappend="${#fields.hasErrors('horaAbertura')} ? 'is-invalid'">
+                                        <div class="invalid-feedback" th:errors="*{horaAbertura}"></div>
+                                    </div>
+                                    <div class="col-6 col-sm-4 mb-3">
+                                        <label for="horaFechamento" class="form-label">Fecha às <span class="text-danger">*</span></label>
+                                        <input type="time" id="horaFechamento" th:field="*{horaFechamento}" class="form-control"
+                                               th:classappend="${#fields.hasErrors('horaFechamento')} ? 'is-invalid'">
+                                        <div class="invalid-feedback" th:errors="*{horaFechamento}"></div>
+                                    </div>
+                                </div>
+
+                                <div class="form-check form-switch mb-4">
+                                    <input class="form-check-input" type="checkbox" role="switch" id="ativa" th:field="*{ativa}">
+                                    <label class="form-check-label" for="ativa">Disponível para reservas</label>
+                                </div>
+
+                                <div class="jc-form-acoes">
+                                    <a th:href="@{/areas}" class="btn btn-outline-secondary"><i class="bi bi-x-lg me-1"></i>Cancelar</a>
+                                    <button type="submit" class="btn btn-primary px-4"><i class="bi bi-check-lg me-1"></i>Salvar</button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+
+        <footer th:replace="~{layout :: rodape}"></footer>
+    </div>
+</div>
+<th:block th:replace="~{layout :: scripts}"></th:block>
+</body>
+</html>

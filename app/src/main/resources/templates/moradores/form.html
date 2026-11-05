@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="pt-BR" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{layout :: head(${titulo})}"></head>
+<body class="jc-body">
+<div class="jc-app">
+    <aside th:replace="~{layout :: sidebar('moradores')}"></aside>
+
+    <div class="jc-conteudo">
+        <header th:replace="~{layout :: topo(${titulo})}"></header>
+
+        <main class="jc-main">
+            <div class="row justify-content-center">
+                <div class="col-12 col-md-10 col-xl-8">
+
+                    <a th:href="@{/moradores}" class="d-inline-flex align-items-center gap-1 text-decoration-none mb-3">
+                        <i class="bi bi-arrow-left"></i>Voltar para moradores
+                    </a>
+
+                    <div th:replace="~{layout :: alertas}"></div>
+
+                    <div class="jc-card">
+                        <div class="jc-card-topo">
+                            <h2 class="h5"><i class="bi bi-person-vcard me-2 text-primary"></i><span th:text="${titulo}">Novo morador</span></h2>
+                        </div>
+                        <div class="jc-card-corpo">
+
+                            <form th:action="@{/moradores/salvar}" th:object="${morador}" method="post" novalidate>
+                                <input type="hidden" th:field="*{id}">
+
+                                <div class="mb-3">
+                                    <label for="nome" class="form-label">Nome <span class="text-danger">*</span></label>
+                                    <div class="input-group has-validation">
+                                        <span class="input-group-text"><i class="bi bi-person"></i></span>
+                                        <input type="text" id="nome" th:field="*{nome}" class="form-control"
+                                               th:classappend="${#fields.hasErrors('nome')} ? 'is-invalid'"
+                                               placeholder="Nome completo do morador" autocomplete="name">
+                                        <div class="invalid-feedback" th:errors="*{nome}"></div>
+                                    </div>
+                                </div>
+
+                                <!-- 1 coluna no celular, 2 a partir do tablet -->
+                                <div class="row">
+                                    <div class="col-sm-6 mb-3">
+                                        <label for="apartamento" class="form-label">Apartamento <span class="text-danger">*</span></label>
+                                        <div class="input-group has-validation">
+                                            <span class="input-group-text"><i class="bi bi-door-closed"></i></span>
+                                            <input type="text" id="apartamento" th:field="*{apartamento}" class="form-control"
+                                                   th:classappend="${#fields.hasErrors('apartamento')} ? 'is-invalid'"
+                                                   placeholder="Ex.: 101" inputmode="numeric">
+                                            <div class="invalid-feedback" th:errors="*{apartamento}"></div>
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-6 mb-3">
+                                        <label for="bloco" class="form-label">Bloco <span class="text-danger">*</span></label>
+                                        <div class="input-group has-validation">
+                                            <span class="input-group-text"><i class="bi bi-building"></i></span>
+                                            <input type="text" id="bloco" th:field="*{bloco}" class="form-control"
+                                                   th:classappend="${#fields.hasErrors('bloco')} ? 'is-invalid'"
+                                                   placeholder="Ex.: A">
+                                            <div class="invalid-feedback" th:errors="*{bloco}"></div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="row">
+                                    <div class="col-sm-6 mb-3">
+                                        <label for="cpf" class="form-label">CPF <span class="text-danger">*</span></label>
+                                        <div class="input-group has-validation">
+                                            <span class="input-group-text"><i class="bi bi-credit-card-2-front"></i></span>
+                                            <input type="text" id="cpf" th:field="*{cpf}" class="form-control"
+                                                   th:classappend="${#fields.hasErrors('cpf')} ? 'is-invalid'"
+                                                   placeholder="000.000.000-00" maxlength="14" inputmode="numeric">
+                                            <div class="invalid-feedback" th:errors="*{cpf}"></div>
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-6 mb-3">
+                                        <label for="telefone" class="form-label">Telefone <span class="text-danger">*</span></label>
+                                        <div class="input-group has-validation">
+                                            <span class="input-group-text"><i class="bi bi-telephone"></i></span>
+                                            <input type="tel" id="telefone" th:field="*{telefone}" class="form-control"
+                                                   th:classappend="${#fields.hasErrors('telefone')} ? 'is-invalid'"
+                                                   placeholder="(00) 00000-0000" maxlength="20" autocomplete="tel">
+                                            <div class="invalid-feedback" th:errors="*{telefone}"></div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="mb-3">
+                                    <label for="email" class="form-label">E-mail <span class="text-danger">*</span></label>
+                                    <div class="input-group has-validation">
+                                        <span class="input-group-text"><i class="bi bi-envelope"></i></span>
+                                        <input type="email" id="email" th:field="*{email}" class="form-control"
+                                               th:classappend="${#fields.hasErrors('email')} ? 'is-invalid'"
+                                               placeholder="morador@exemplo.com" autocomplete="email">
+                                        <div class="invalid-feedback" th:errors="*{email}"></div>
+                                    </div>
+                                    <div class="form-text">É o login do morador no app.</div>
+                                </div>
+
+                                <div class="mb-4">
+                                    <label for="senhaAcesso" class="form-label">
+                                        Senha de acesso ao app
+                                        <span class="text-danger" th:if="*{id == null}">*</span>
+                                    </label>
+                                    <div class="input-group">
+                                        <span class="input-group-text"><i class="bi bi-key"></i></span>
+                                        <input type="password" id="senhaAcesso" name="senhaAcesso" class="form-control"
+                                               minlength="6" autocomplete="new-password"
+                                               th:placeholder="*{id == null} ? 'Mínimo de 6 caracteres' : 'Deixe em branco para manter a atual'">
+                                    </div>
+                                </div>
+
+                                <div class="jc-form-acoes">
+                                    <a th:href="@{/moradores}" class="btn btn-outline-secondary">
+                                        <i class="bi bi-x-lg me-1"></i>Cancelar
+                                    </a>
+                                    <button type="submit" class="btn btn-primary px-4">
+                                        <i class="bi bi-check-lg me-1"></i>Salvar
+                                    </button>
+                                </div>
+                            </form>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+
+        <footer th:replace="~{layout :: rodape}"></footer>
+    </div>
+</div>
+<th:block th:replace="~{layout :: scripts}"></th:block>
+</body>
+</html>

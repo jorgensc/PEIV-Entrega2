@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="pt-BR" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{layout :: head('Avisos')}"></head>
+<body class="jc-body">
+<div class="jc-app">
+    <aside th:replace="~{layout :: sidebar('avisos')}"></aside>
+
+    <div class="jc-conteudo">
+        <header th:replace="~{layout :: topo('Avisos')}"></header>
+
+        <main class="jc-main">
+            <div th:replace="~{layout :: alertas}"></div>
+
+            <div class="jc-pagina-topo">
+                <div>
+                    <h1>Mural de avisos</h1>
+                    <p>O que for publicado aqui aparece no app de todos os moradores.</p>
+                </div>
+                <a th:href="@{/avisos/novo}" class="btn btn-primary d-none d-sm-inline-flex align-items-center gap-2">
+                    <i class="bi bi-plus-lg"></i>Novo aviso
+                </a>
+            </div>
+
+            <div th:if="${#lists.isEmpty(avisos)}" class="jc-card jc-vazio">
+                <i class="bi bi-megaphone"></i>
+                <p>Nenhum aviso publicado.</p>
+                <a th:href="@{/avisos/novo}" class="btn btn-outline-primary">Publicar o primeiro aviso</a>
+            </div>
+
+            <!-- 1 coluna no celular, 2 no desktop -->
+            <div class="row g-3">
+                <div class="col-12 col-xl-6" th:each="a : ${avisos}">
+                    <article class="jc-card jc-aviso h-100 d-flex flex-column" th:classappend="${a.importante} ? 'importante'">
+                        <div class="d-flex flex-wrap align-items-center gap-2">
+                            <span class="jc-tag" th:text="${a.categoria.descricao}">Geral</span>
+                            <span th:if="${a.importante}" class="jc-status jc-status-ABERTA">Importante</span>
+                            <span class="small text-muted ms-auto">
+                                <i class="bi bi-clock me-1"></i><span th:text="${#temporals.format(a.publicadoEm, 'dd/MM/yyyy HH:mm')}"></span>
+                            </span>
+                        </div>
+                        <h3 th:text="${a.titulo}">Título</h3>
+                        <p class="flex-grow-1" th:text="${a.conteudo}">Conteúdo</p>
+                        <div class="d-flex align-items-center gap-2 mt-3 pt-3 border-top">
+                            <span class="small text-muted me-auto" th:if="${a.autor != null}">
+                                <i class="bi bi-person me-1"></i><span th:text="${a.autor.nome}"></span>
+                            </span>
+                            <a th:href="@{/avisos/editar/{id}(id=${a.id})}" class="btn btn-sm btn-outline-primary">
+                                <i class="bi bi-pencil-square me-1"></i>Editar
+                            </a>
+                            <form th:action="@{/avisos/excluir/{id}(id=${a.id})}" method="post" class="m-0"
+                                  data-confirmar="Excluir este aviso? Ele some do app dos moradores.">
+                                <button type="submit" class="btn btn-sm btn-outline-danger" aria-label="Excluir aviso">
+                                    <i class="bi bi-trash"></i>
+                                </button>
+                            </form>
+                        </div>
+                    </article>
+                </div>
+            </div>
+        </main>
+
+        <footer th:replace="~{layout :: rodape}"></footer>
+    </div>
+</div>
+
+<a th:href="@{/avisos/novo}" class="jc-fab d-sm-none" aria-label="Novo aviso"><i class="bi bi-plus-lg"></i></a>
+<th:block th:replace="~{layout :: scripts}"></th:block>
+</body>
+</html>

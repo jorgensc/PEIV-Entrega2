@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="pt-BR" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{layout :: head('Reservas')}"></head>
+<body class="jc-body">
+<div class="jc-app">
+    <aside th:replace="~{layout :: sidebar('reservas')}"></aside>
+
+    <div class="jc-conteudo">
+        <header th:replace="~{layout :: topo('Reservas')}"></header>
+
+        <main class="jc-main">
+            <div th:replace="~{layout :: alertas}"></div>
+
+            <div class="jc-pagina-topo">
+                <div>
+                    <h1>Reservas</h1>
+                    <p>Agenda das áreas comuns. O sistema não deixa dois moradores pegarem o mesmo horário.</p>
+                </div>
+                <a th:href="@{/reservas/nova}" class="btn btn-primary d-none d-sm-inline-flex align-items-center gap-2">
+                    <i class="bi bi-plus-lg"></i>Nova reserva
+                </a>
+            </div>
+
+            <!-- filtro por data -->
+            <form th:action="@{/reservas}" method="get" class="jc-filtros align-items-center">
+                <div class="jc-chips">
+                    <a th:href="@{/reservas}" th:classappend="${data == null} ? 'ativo'">Todas</a>
+                    <a th:href="@{/reservas(data=${hoje})}" th:classappend="${data != null and data == hoje} ? 'ativo'">Hoje</a>
+                    <a th:href="@{/reservas(data=${hoje.plusDays(1)})}"
+                       th:classappend="${data != null and data == hoje.plusDays(1)} ? 'ativo'">Amanhã</a>
+                </div>
+                <div class="d-flex gap-2 flex-grow-1 flex-sm-grow-0">
+                    <label class="visually-hidden" for="filtroData">Data</label>
+                    <input type="date" id="filtroData" name="data" class="form-control" th:value="${data}">
+                    <button type="submit" class="btn btn-outline-primary"><i class="bi bi-funnel"></i></button>
+                </div>
+            </form>
+
+            <div class="jc-card jc-card-tabela">
+                <div class="table-responsive">
+                    <table class="table jc-tabela">
+                        <thead>
+                            <tr>
+                                <th scope="col">Área</th>
+                                <th scope="col">Data</th>
+                                <th scope="col">Horário</th>
+                                <th scope="col">Morador</th>
+                                <th scope="col">Situação</th>
+                                <th scope="col" class="text-end">Ações</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr th:each="r : ${reservas}">
+                                <td class="jc-td-titulo" data-label="Área">
+                                    <div class="fw-semibold" th:text="${r.area.nome}">Salão</div>
+                                    <div class="small text-muted fw-normal" th:if="${r.observacao}" th:text="${r.observacao}"></div>
+                                </td>
+                                <td data-label="Data" class="text-nowrap"
+                                    th:text="${#temporals.format(r.dataReserva, 'EEE, dd/MM/yyyy')}">sex, 12/12/2026</td>
+                                <td data-label="Horário" class="text-nowrap"
+                                    th:text="${#temporals.format(r.horaInicio, 'HH:mm')} + ' às ' + ${#temporals.format(r.horaFim, 'HH:mm')}">14:00 às 18:00</td>
+                                <td data-label="Morador">
+                                    <span th:text="${r.morador.nome}">Ana</span>
+                                    <span class="jc-tag ms-1" th:text="${r.morador.apartamento} + ' ' + ${r.morador.bloco}">101 A</span>
+                                </td>
+                                <td data-label="Situação">
+                                    <span class="jc-status" th:classappend="'jc-status-' + ${r.status}"
+                                          th:text="${r.status.name() == 'CONFIRMADA'} ? (${r.dataReserva.isBefore(hoje)} ? 'Realizada' : 'Confirmada') : 'Cancelada'">Confirmada</span>
+                                </td>
+                                <td class="jc-td-acoes">
+                                    <div class="jc-acoes" th:if="${r.status.name() == 'CONFIRMADA' and !r.dataReserva.isBefore(hoje)}">
+                                        <form th:action="@{/reservas/{id}/cancelar(id=${r.id})}" method="post"
+                                              data-confirmar="Cancelar esta reserva? O horário fica livre para outros moradores.">
+                                            <button type="submit" class="btn btn-sm btn-outline-danger">
+                                                <i class="bi bi-x-circle me-1"></i>Cancelar
+                                            </button>
+                                        </form>
+                                    </div>
+                                    <span class="small text-muted" th:unless="${r.status.name() == 'CONFIRMADA' and !r.dataReserva.isBefore(hoje)}">Sem ações</span>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="jc-vazio" th:if="${#lists.isEmpty(reservas)}">
+                    <i class="bi bi-calendar2"></i>Nenhuma reserva para este filtro.
+                </div>
+                <div class="jc-card-rodape" th:unless="${#lists.isEmpty(reservas)}">
+                    <span th:text="${#lists.size(reservas)}">0</span> reserva(s)
+                </div>
+            </div>
+        </main>
+
+        <footer th:replace="~{layout :: rodape}"></footer>
+    </div>
+</div>
+
+<a th:href="@{/reservas/nova}" class="jc-fab d-sm-none" aria-label="Nova reserva"><i class="bi bi-plus-lg"></i></a>
+<th:block th:replace="~{layout :: scripts}"></th:block>
+</body>
+</html>

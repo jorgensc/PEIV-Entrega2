@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="pt-BR" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{layout :: head('Áreas comuns')}"></head>
+<body class="jc-body">
+<div class="jc-app">
+    <aside th:replace="~{layout :: sidebar('areas')}"></aside>
+
+    <div class="jc-conteudo">
+        <header th:replace="~{layout :: topo('Áreas comuns')}"></header>
+
+        <main class="jc-main">
+            <div th:replace="~{layout :: alertas}"></div>
+
+            <div class="jc-pagina-topo">
+                <div>
+                    <h1>Áreas comuns</h1>
+                    <p>Espaços que os moradores podem reservar pelo app.</p>
+                </div>
+                <a th:href="@{/areas/novo}" class="btn btn-primary d-none d-sm-inline-flex align-items-center gap-2">
+                    <i class="bi bi-plus-lg"></i>Nova área
+                </a>
+            </div>
+
+            <div class="jc-card jc-card-tabela">
+                <div class="table-responsive">
+                    <table class="table jc-tabela">
+                        <thead>
+                            <tr>
+                                <th scope="col">Área</th>
+                                <th scope="col">Capacidade</th>
+                                <th scope="col">Funcionamento</th>
+                                <th scope="col">Situação</th>
+                                <th scope="col" class="text-end">Ações</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr th:each="a : ${areas}">
+                                <td class="jc-td-titulo" data-label="Área">
+                                    <div class="fw-semibold" th:text="${a.nome}">Salão</div>
+                                    <div class="small text-muted fw-normal" th:text="${a.descricao}"></div>
+                                </td>
+                                <td data-label="Capacidade" th:text="${a.capacidade} + ' pessoas'">80 pessoas</td>
+                                <td data-label="Funcionamento" class="text-nowrap"
+                                    th:text="${#temporals.format(a.horaAbertura, 'HH:mm')} + ' às ' + ${#temporals.format(a.horaFechamento, 'HH:mm')}">08:00 às 23:00</td>
+                                <td data-label="Situação">
+                                    <span class="jc-status" th:classappend="${a.ativa} ? 'jc-status-CONFIRMADA' : 'jc-status-CANCELADA'"
+                                          th:text="${a.ativa} ? 'Disponível' : 'Desativada'">Disponível</span>
+                                </td>
+                                <td class="jc-td-acoes">
+                                    <div class="jc-acoes">
+                                        <a th:href="@{/areas/editar/{id}(id=${a.id})}" class="btn btn-sm btn-outline-primary" title="Editar">
+                                            <i class="bi bi-pencil-square"></i><span class="d-md-none ms-1">Editar</span>
+                                        </a>
+                                        <form th:action="@{/areas/excluir/{id}(id=${a.id})}" method="post"
+                                              data-confirmar="Excluir esta área comum?">
+                                            <button type="submit" class="btn btn-sm btn-outline-danger" title="Excluir">
+                                                <i class="bi bi-trash"></i><span class="d-md-none ms-1">Excluir</span>
+                                            </button>
+                                        </form>
+                                    </div>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="jc-vazio" th:if="${#lists.isEmpty(areas)}"><i class="bi bi-house"></i>Nenhuma área cadastrada.</div>
+            </div>
+        </main>
+
+        <footer th:replace="~{layout :: rodape}"></footer>
+    </div>
+</div>
+
+<a th:href="@{/areas/novo}" class="jc-fab d-sm-none" aria-label="Nova área"><i class="bi bi-plus-lg"></i></a>
+<th:block th:replace="~{layout :: scripts}"></th:block>
+</body>
+</html>

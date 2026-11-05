@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="pt-BR" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{layout :: head('Painel')}"></head>
+<body class="jc-body">
+<div class="jc-app">
+    <aside th:replace="~{layout :: sidebar('painel')}"></aside>
+
+    <div class="jc-conteudo">
+        <header th:replace="~{layout :: topo('Painel')}"></header>
+
+        <main class="jc-main">
+            <div th:replace="~{layout :: alertas}"></div>
+
+            <div class="jc-pagina-topo">
+                <div>
+                    <h1>Olá, síndico</h1>
+                    <p>Resumo do condomínio em <span th:text="${#temporals.format(#temporals.createNow(), 'dd/MM/yyyy')}"></span>.</p>
+                </div>
+                <a th:href="@{/avisos/novo}" class="btn btn-primary d-none d-sm-inline-flex align-items-center gap-2">
+                    <i class="bi bi-megaphone"></i>Publicar aviso
+                </a>
+            </div>
+
+            <!-- numeros: 2 por linha no celular, 4 no desktop -->
+            <div class="row g-3 mb-4">
+                <div class="col-6 col-xl-3">
+                    <a th:href="@{/moradores}" class="jc-card jc-kpi">
+                        <span class="jc-kpi-icone jc-cor-azul"><i class="bi bi-people"></i></span>
+                        <span><span class="jc-kpi-valor d-block" th:text="${totalMoradores}">0</span>
+                              <span class="jc-kpi-rotulo">Moradores</span></span>
+                    </a>
+                </div>
+                <div class="col-6 col-xl-3">
+                    <a th:href="@{/reservas}" class="jc-card jc-kpi">
+                        <span class="jc-kpi-icone jc-cor-verde"><i class="bi bi-calendar2-check"></i></span>
+                        <span><span class="jc-kpi-valor d-block" th:text="${reservasFuturas}">0</span>
+                              <span class="jc-kpi-rotulo">Reservas futuras</span></span>
+                    </a>
+                </div>
+                <div class="col-6 col-xl-3">
+                    <a th:href="@{/ocorrencias(status='ABERTA')}" class="jc-card jc-kpi">
+                        <span class="jc-kpi-icone jc-cor-ambar"><i class="bi bi-exclamation-octagon"></i></span>
+                        <span><span class="jc-kpi-valor d-block" th:text="${ocorrenciasAbertas}">0</span>
+                              <span class="jc-kpi-rotulo">Ocorrências abertas</span></span>
+                    </a>
+                </div>
+                <div class="col-6 col-xl-3">
+                    <a th:href="@{/avisos}" class="jc-card jc-kpi">
+                        <span class="jc-kpi-icone jc-cor-roxo"><i class="bi bi-megaphone"></i></span>
+                        <span><span class="jc-kpi-valor d-block" th:text="${totalAvisos}">0</span>
+                              <span class="jc-kpi-rotulo">Avisos publicados</span></span>
+                    </a>
+                </div>
+            </div>
+
+            <div class="row g-3">
+                <!-- proximas reservas -->
+                <div class="col-12 col-lg-6">
+                    <section class="jc-card h-100">
+                        <div class="jc-card-topo">
+                            <h2><i class="bi bi-calendar2-week me-2 text-primary"></i>Próximas reservas</h2>
+                            <a th:href="@{/reservas}" class="small">Ver todas</a>
+                        </div>
+                        <ul class="jc-lista" th:unless="${#lists.isEmpty(proximasReservas)}">
+                            <li th:each="r : ${proximasReservas}">
+                                <div class="jc-data-bloco">
+                                    <strong th:text="${#temporals.format(r.dataReserva, 'dd')}">12</strong>
+                                    <span th:text="${#strings.replace(#temporals.format(r.dataReserva, 'MMM'), '.', '')}">dez</span>
+                                </div>
+                                <div class="flex-grow-1 min-w-0">
+                                    <div class="fw-semibold" th:text="${r.area.nome}">Salão</div>
+                                    <div class="small text-muted">
+                                        <span th:text="${#temporals.format(r.horaInicio, 'HH:mm')} + ' às ' + ${#temporals.format(r.horaFim, 'HH:mm')}"></span>
+                                        · <span th:text="${r.morador.nome}"></span>
+                                        (<span th:text="${r.morador.apartamento} + ' ' + ${r.morador.bloco}"></span>)
+                                    </div>
+                                </div>
+                            </li>
+                        </ul>
+                        <div class="jc-vazio" th:if="${#lists.isEmpty(proximasReservas)}">
+                            <i class="bi bi-calendar2"></i>Nenhuma reserva marcada.
+                        </div>
+                    </section>
+                </div>
+
+                <!-- ocorrencias aguardando -->
+                <div class="col-12 col-lg-6">
+                    <section class="jc-card h-100">
+                        <div class="jc-card-topo">
+                            <h2><i class="bi bi-exclamation-octagon me-2 text-warning"></i>Aguardando atendimento</h2>
+                            <span class="small text-muted"
+                                  th:text="${ocorrenciasAndamento} + ' em andamento · ' + ${ocorrenciasResolvidas} + ' resolvidas'"></span>
+                        </div>
+                        <ul class="jc-lista" th:unless="${#lists.isEmpty(pendentes)}">
+                            <li th:each="o : ${pendentes}">
+                                <span class="jc-kpi-icone jc-cor-ambar" style="width:38px;height:38px;flex-basis:38px;font-size:1rem">
+                                    <i class="bi bi-tools"></i>
+                                </span>
+                                <div class="flex-grow-1 min-w-0">
+                                    <a class="fw-semibold text-decoration-none" th:href="@{/ocorrencias/{id}(id=${o.id})}" th:text="${o.titulo}">Título</a>
+                                    <div class="small text-muted">
+                                        <span th:text="${o.morador.nome}"></span> ·
+                                        <span th:text="${#temporals.format(o.abertaEm, 'dd/MM HH:mm')}"></span>
+                                    </div>
+                                </div>
+                                <a th:href="@{/ocorrencias/{id}(id=${o.id})}" class="btn btn-sm btn-outline-primary">Atender</a>
+                            </li>
+                        </ul>
+                        <div class="jc-vazio" th:if="${#lists.isEmpty(pendentes)}">
+                            <i class="bi bi-emoji-smile"></i>Nenhuma ocorrência aberta.
+                        </div>
+                    </section>
+                </div>
+
+                <!-- avisos -->
+                <div class="col-12 col-lg-7">
+                    <section class="jc-card h-100">
+                        <div class="jc-card-topo">
+                            <h2><i class="bi bi-megaphone me-2 text-primary"></i>Últimos avisos</h2>
+                            <a th:href="@{/avisos}" class="small">Gerenciar</a>
+                        </div>
+                        <div th:each="a, it : ${ultimosAvisos}" class="jc-aviso"
+                             th:classappend="${a.importante} ? 'importante'"
+                             th:style="${!it.last} ? 'border-bottom:1px solid var(--jc-borda)'">
+                            <span class="jc-tag" th:text="${a.categoria.descricao}">Geral</span>
+                            <span class="small text-muted ms-1" th:text="${#temporals.format(a.publicadoEm, 'dd/MM/yyyy')}"></span>
+                            <h3 th:text="${a.titulo}">Título</h3>
+                            <p class="text-truncate" th:text="${a.conteudo}">Conteúdo</p>
+                        </div>
+                        <div class="jc-vazio" th:if="${#lists.isEmpty(ultimosAvisos)}">
+                            <i class="bi bi-megaphone"></i>Nenhum aviso publicado.
+                        </div>
+                    </section>
+                </div>
+
+                <!-- QR do app -->
+                <div class="col-12 col-lg-5">
+                    <section class="jc-card jc-app-card h-100 p-4 d-flex flex-column flex-sm-row align-items-sm-center gap-4">
+                        <div class="jc-qr" data-qr="/app/" aria-label="QR code do app do morador"></div>
+                        <div>
+                            <h2 class="h5 fw-bold">App do morador</h2>
+                            <p class="text-muted-claro mb-3">Os moradores abrem pelo celular, instalam na tela inicial e usam até sem internet.</p>
+                            <div class="small text-muted-claro mb-3" data-qr-url></div>
+                            <a th:href="@{/app/}" target="_blank" rel="noopener" class="btn btn-light btn-sm fw-semibold">
+                                <i class="bi bi-box-arrow-up-right me-1"></i>Abrir app
+                            </a>
+                        </div>
+                    </section>
+                </div>
+            </div>
+        </main>
+
+        <footer th:replace="~{layout :: rodape}"></footer>
+    </div>
+</div>
+
+<a th:href="@{/avisos/novo}" class="jc-fab d-sm-none" aria-label="Publicar aviso"><i class="bi bi-megaphone"></i></a>
+
+<script src="https://cdn.jsdelivr.net/npm/qrcode-generator@1.4.4/qrcode.min.js"></script>
+<th:block th:replace="~{layout :: scripts}"></th:block>
+</body>
+</html>

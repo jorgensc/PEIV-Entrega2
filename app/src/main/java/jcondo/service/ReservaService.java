@@ -156,7 +156,7 @@ public class ReservaService {
         return repository.save(reserva);
     }
 
-    private LocalDate hoje() {
+    public LocalDate hoje() {
         return LocalDate.now(relogio);
     }
 }

@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="pt-BR" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{layout :: head('Ocorrências')}"></head>
+<body class="jc-body">
+<div class="jc-app">
+    <aside th:replace="~{layout :: sidebar('ocorrencias')}"></aside>
+
+    <div class="jc-conteudo">
+        <header th:replace="~{layout :: topo('Ocorrências')}"></header>
+
+        <main class="jc-main">
+            <div th:replace="~{layout :: alertas}"></div>
+
+            <div class="jc-pagina-topo">
+                <div>
+                    <h1>Ocorrências</h1>
+                    <p>Problemas registrados pelos moradores no app.</p>
+                </div>
+            </div>
+
+            <div class="jc-filtros">
+                <div class="jc-chips">
+                    <a th:href="@{/ocorrencias}" th:classappend="${statusFiltro == null} ? 'ativo'">Todas</a>
+                    <a th:each="s : ${statusLista}" th:href="@{/ocorrencias(status=${s})}"
+                       th:classappend="${statusFiltro == s} ? 'ativo'" th:text="${s.descricao}">Aberta</a>
+                </div>
+            </div>
+
+            <div class="jc-card jc-card-tabela">
+                <div class="table-responsive">
+                    <table class="table jc-tabela">
+                        <thead>
+                            <tr>
+                                <th scope="col">Ocorrência</th>
+                                <th scope="col">Categoria</th>
+                                <th scope="col">Morador</th>
+                                <th scope="col">Aberta em</th>
+                                <th scope="col">Status</th>
+                                <th scope="col" class="text-end">Ações</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr th:each="o : ${ocorrencias}">
+                                <td class="jc-td-titulo fw-semibold" data-label="Ocorrência" th:text="${o.titulo}">Título</td>
+                                <td data-label="Categoria"><span class="jc-tag" th:text="${o.categoria.descricao}">Manutenção</span></td>
+                                <td data-label="Morador">
+                                    <span th:text="${o.morador.nome}">Ana</span>
+                                    <span class="jc-tag ms-1" th:text="${o.morador.apartamento} + ' ' + ${o.morador.bloco}">101 A</span>
+                                </td>
+                                <td data-label="Aberta em" class="text-nowrap" th:text="${#temporals.format(o.abertaEm, 'dd/MM/yyyy HH:mm')}"></td>
+                                <td data-label="Status">
+                                    <span class="jc-status" th:classappend="'jc-status-' + ${o.status}" th:text="${o.status.descricao}">Aberta</span>
+                                </td>
+                                <td class="jc-td-acoes">
+                                    <div class="jc-acoes">
+                                        <a th:href="@{/ocorrencias/{id}(id=${o.id})}" class="btn btn-sm btn-outline-primary">
+                                            <i class="bi bi-chat-left-text me-1"></i>Atender
+                                        </a>
+                                    </div>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="jc-vazio" th:if="${#lists.isEmpty(ocorrencias)}">
+                    <i class="bi bi-emoji-smile"></i>Nenhuma ocorrência neste filtro.
+                </div>
+            </div>
+        </main>
+
+        <footer th:replace="~{layout :: rodape}"></footer>
+    </div>
+</div>
+<th:block th:replace="~{layout :: scripts}"></th:block>
+</body>
+</html>
