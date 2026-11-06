@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<title>PE IV - JCondo - Entrega 2</title>
+<style>
+  @page { size: A4; margin: 22mm 20mm 20mm 22mm; }
+  * { box-sizing: border-box; }
+  body { font-family: "Segoe UI", Arial, sans-serif; font-size: 11pt; line-height: 1.5; color: #1f2937; margin: 0; }
+  .capa { height: 252mm; display: flex; flex-direction: column; justify-content: space-between; text-align: center; page-break-after: always; }
+  .capa .inst { font-weight: 700; font-size: 13pt; letter-spacing: .02em; }
+  .capa .disc { margin-top: 6mm; font-size: 12pt; }
+  .capa h1 { font-size: 30pt; margin: 0; color: #1e3a5f; }
+  .capa .subt { font-size: 14pt; color: #475467; margin-top: 3mm; }
+  .capa .ent { margin-top: 10mm; display: inline-block; padding: 2mm 6mm; border: 1.5px solid #1e3a5f; border-radius: 3mm; color: #1e3a5f; font-weight: 600; }
+  .capa .rodape { text-align: right; }
+  h2 { font-size: 15pt; color: #1e3a5f; border-bottom: 2px solid #1e3a5f; padding-bottom: 1.5mm; margin: 0 0 4mm; page-break-after: avoid; }
+  h3 { font-size: 12pt; margin: 6mm 0 2mm; color: #14273f; page-break-after: avoid; }
+  p { margin: 0 0 3mm; text-align: justify; }
+  .secao { page-break-before: always; }
+  table { width: 100%; border-collapse: collapse; margin: 2mm 0 4mm; font-size: 9.5pt; page-break-inside: avoid; }
+  th { background: #1e3a5f; color: #fff; text-align: left; padding: 1.6mm 2.4mm; font-weight: 600; }
+  td { border-bottom: 1px solid #d8dee8; padding: 1.6mm 2.4mm; vertical-align: top; }
+  tr:nth-child(even) td { background: #f6f8fb; }
+  code { font-family: Consolas, "Courier New", monospace; font-size: 9pt; background: #eef2f7; padding: .2mm 1mm; border-radius: 1mm; }
+  pre { font-family: Consolas, monospace; font-size: 8.5pt; background: #0f1b2d; color: #e6edf6; padding: 3mm 4mm; border-radius: 2mm; white-space: pre-wrap; page-break-inside: avoid; }
+  figure { margin: 3mm 0 5mm; text-align: center; page-break-inside: avoid; }
+  figure img { max-width: 100%; border: 1px solid #d8dee8; border-radius: 1.5mm; }
+  figcaption { font-size: 9pt; color: #5b6474; margin-top: 1.5mm; }
+  .linha-fig { display: flex; gap: 4mm; justify-content: center; align-items: flex-start; }
+  .linha-fig img { height: 92mm; width: auto; }
+  .destaque { background: #e8efff; border-left: 4px solid #2f6fed; padding: 3mm 4mm; border-radius: 1.5mm; margin: 3mm 0 4mm; }
+  ul { margin: 0 0 3mm 5mm; padding-left: 4mm; }
+  li { margin-bottom: 1mm; }
+  .link { font-size: 13pt; font-weight: 700; color: #2f6fed; }
+</style>
+</head>
+<body>
+
+<section class="capa">
+  <div>
+    <div class="inst">UNIVERSIDADE DO OESTE DE SANTA CATARINA - UNOESC</div>
+    <div class="disc">Práticas Extensionistas IV</div>
+  </div>
+  <div>
+    <h1>JCondo</h1>
+    <div class="subt">Sistema de Gestão de Condomínio</div>
+    <div class="ent">Entrega 2: responsividade, PWA, API e infraestrutura</div>
+  </div>
+  <div class="rodape">
+    Jorge Luiz do Nascimento<br>
+    Chapecó - SC, 5 de novembro de 2026
+  </div>
+</section>
+
+<section>
+  <h2>1. Integrantes do grupo</h2>
+  <table>
+    <tr><th style="width:12mm">#</th><th>Nome</th></tr>
+    <tr><td>1</td><td>Jorge Luiz do Nascimento</td></tr>
+  </table>
+
+  <h2 style="margin-top:10mm">2. Repositório no GitHub</h2>
+  <p class="link">https://github.com/jorgensc/PEIV</p>
+  <p>Todo o código da aplicação responsiva, da versão mobile (PWA) e da API está publicado no repositório, junto com os scripts e a descrição da infraestrutura. O que entrou nesta entrega:</p>
+  <table>
+    <tr><th style="width:62mm">Caminho</th><th>Conteúdo</th></tr>
+    <tr><td><code>app/src/main/java/jcondo/api</code></td><td>API REST <code>/api/v1</code> (controllers e DTOs)</td></tr>
+    <tr><td><code>app/src/main/java/jcondo/security</code></td><td>login do painel, JWT da API e perfis síndico/morador</td></tr>
+    <tr><td><code>app/src/main/resources/templates</code></td><td>painel do síndico responsivo (Thymeleaf + Bootstrap)</td></tr>
+    <tr><td><code>app/src/main/resources/static/app</code></td><td>app mobile PWA: manifest, service worker, telas, ícones</td></tr>
+    <tr><td><code>app/src/test</code></td><td>30 testes (unitários e de integração da API)</td></tr>
+    <tr><td><code>infra/</code></td><td>scripts do servidor self-hosted (instalar, iniciar, atualizar, backup, parar)</td></tr>
+    <tr><td><code>doc/infraestrutura.md</code></td><td>descrição completa da configuração da infraestrutura</td></tr>
+    <tr><td><code>doc/api.md</code></td><td>documentação da API (rotas, regras, erros, exemplos)</td></tr>
+    <tr><td><code>doc/telas</code>, <code>doc/*-v2.png</code></td><td>capturas das telas e diagramas atualizados</td></tr>
+    <tr><td><code>.github/workflows/ci-cd.yml</code></td><td>pipeline: testes a cada push e Release com o <code>.jar</code> na main</td></tr>
+  </table>
+
+  <h3>Sobre a aplicação nesta entrega</h3>
+  <p>Na Entrega 1 o JCondo tinha só o cadastro de moradores. Agora ele cobre as funções planejadas no diagrama de casos de uso e no DER da Entrega 1: mural de avisos, reserva de áreas comuns com bloqueio de conflito de horário e registro e acompanhamento de ocorrências, além do login com dois perfis. O sistema tem três frentes, todas no mesmo endereço:</p>
+  <ul>
+    <li><b>Painel web do síndico</b> (<code>/login</code>), refeito com layout responsivo;</li>
+    <li><b>App do morador</b> (<code>/app/</code>), um Progressive Web App instalável que funciona offline;</li>
+    <li><b>API REST</b> (<code>/api/v1</code>), usada pelo app e documentada no Swagger.</li>
+  </ul>
+  <p>Para a demonstração, o banco vazio é preenchido com dados de exemplo. O síndico entra com <code>sindico@jcondo.com</code> / <code>sindico123</code>, e os moradores (por exemplo <code>ana.souza@email.com</code>) com a senha <code>morador123</code>.</p>
+</section>
+
+<section class="secao">
+  <h2>3. Resumo do que foi desenvolvido</h2>
+
+  <h3>3.1 Responsividade</h3>
+  <p>O painel foi escrito com abordagem <i>mobile first</i>. No celular, o menu vira uma gaveta, as tabelas se transformam em cartões com o rótulo de cada campo e a ação principal fica num botão flutuante. No tablet, as colunas menos importantes saem para a tabela caber sem rolagem lateral, e a partir de 992 px o menu fica fixo na lateral. Os layouts foram conferidos em 390, 820, 1024 e 1440 px.</p>
+  <figure class="linha-fig">
+    <img src="../telas/web-celular-moradores.png" alt="">
+    <img src="../telas/web-celular-menu.png" alt="">
+    <img src="../telas/web-tablet-moradores.png" alt="">
+  </figure>
+  <figure>
+    <img src="../telas/web-desktop-painel.png" alt="" style="width:100%">
+    <figcaption>Figura 1: o mesmo painel no celular (lista em cartões e menu em gaveta), no tablet e no computador.</figcaption>
+  </figure>
+</section>
+
+<section class="secao">
+  <h3 style="margin-top:0">3.2 Versão mobile (PWA)</h3>
+  <p>O app do morador é um Progressive Web App. Ele tem <i>manifest</i> com ícones (inclusive o <i>maskable</i> do Android), atalhos e capturas de tela, então o navegador oferece "Instalar" e o app abre em tela cheia pelo ícone. O <i>service worker</i> guarda os arquivos do app e as últimas respostas da API: sem internet, o app abre normalmente e mostra os dados salvos com o selo "Offline". Uma ocorrência registrada sem conexão fica numa fila no aparelho e é enviada sozinha quando a internet volta. O app ainda avisa quando há versão nova, segue o tema claro ou escuro do celular e respeita as áreas seguras do iPhone.</p>
+  <p>Telas: início com resumo, mural de avisos com compartilhamento, reserva de área com a grade dos horários já ocupados no dia, minhas reservas com cancelamento, abertura e acompanhamento de ocorrências, e perfil com troca de senha. Logado como síndico, o mesmo app publica avisos e responde ocorrências.</p>
+  <figure class="linha-fig">
+    <img src="../telas/app-inicio.png" alt="">
+    <img src="../telas/app-nova-reserva.png" alt="">
+    <img src="../telas/app-offline-fila.png" alt="">
+    <img src="../telas/app-sindico-ocorrencia.png" alt="">
+  </figure>
+  <figcaption style="text-align:center;font-size:9pt;color:#5b6474">Figura 2: início do morador, reserva com horários ocupados, ocorrência na fila offline e resposta do síndico.</figcaption>
+
+  <h3>3.3 API</h3>
+  <p>A API REST fica em <code>/api/v1</code> e tem 27 operações sobre autenticação, moradores, avisos, áreas comuns, reservas, ocorrências e resumo. O login devolve um token JWT, que vai no cabeçalho <code>Authorization</code> das outras chamadas. Cada rota confere o perfil: o morador vê só as próprias reservas e ocorrências e não publica avisos. As regras da reserva (horário de funcionamento, data passada, antecedência de até 90 dias e conflito de horário) ficam no serviço, e o conflito devolve 409. Todos os erros seguem o padrão Problem Details (RFC 9457). A documentação interativa está no Swagger e a descrição completa no arquivo <code>doc/api.md</code>. Doze testes de integração sobem a aplicação com banco H2 e testam a API de ponta a ponta a cada push.</p>
+</section>
+
+<section class="secao">
+  <h2>4. Configuração da infraestrutura self-hosted</h2>
+
+  <h3>4.1 Escolha da infraestrutura</h3>
+  <p>Na Entrega 1 a opção escolhida foi o Microsoft Azure, e o self-host aparecia na comparação com quatro desvantagens: precisar de IP público ou túnel, cuidar sozinho do certificado HTTPS, cuidar do firewall e depender da máquina ligada. Na hora de configurar, a hospedagem passou para um servidor próprio. A assinatura de nuvem dependeria de conta institucional ativada, de regiões liberadas pela política de estudante e de crédito com prazo, e o plano gratuito desliga a aplicação quando ela fica parada.</p>
+  <p>O que tornou o self-host viável foi o <b>Cloudflare Tunnel</b>, que resolve três das quatro desvantagens:</p>
+  <table>
+    <tr><th style="width:52mm">Desvantagem (Entrega 1)</th><th>Como foi resolvida</th></tr>
+    <tr><td>IP público / porta no roteador</td><td>O túnel abre uma conexão de <b>saída</b> do servidor até a Cloudflare. Nenhuma porta é aberta e o IP do servidor não aparece.</td></tr>
+    <tr><td>Certificado HTTPS</td><td>A Cloudflare entrega o endereço público com certificado válido. O PWA, que exige HTTPS, funciona normalmente.</td></tr>
+    <tr><td>Firewall e segurança</td><td>MySQL e aplicação só escutam em <code>127.0.0.1</code>; nada fica exposto na rede local ou na internet além do túnel.</td></tr>
+    <tr><td>Máquina ligada</td><td>Continua valendo; é aceitável para o projeto acadêmico e a apresentação. A seção 4.9 mostra como eliminar essa limitação.</td></tr>
+  </table>
+  <p>O custo total é zero, sem cartão e sem prazo de expiração, e o controle sobre o ambiente é completo.</p>
+
+  <h3>4.2 Arquitetura</h3>
+  <p>Um único processo Java entrega o painel (<code>/login</code>), o PWA (<code>/app/</code>), a API (<code>/api/v1</code>), o Swagger e o <i>health check</i> (<code>/actuator/health</code>). O usuário acessa <code>https://&lt;nome&gt;.trycloudflare.com</code>; a borda da Cloudflare em São Paulo repassa a requisição pelo túnel até o <code>cloudflared</code>, que entrega à aplicação em <code>127.0.0.1:8080</code>, e a aplicação usa o MySQL em <code>127.0.0.1:3306</code>.</p>
+  <figure>
+    <img src="../diagrama-implantacao-v2.png" alt="" style="width:100%;max-height:150mm;object-fit:contain">
+    <figcaption>Figura 3: diagrama de implantação com o servidor self-hosted e o Cloudflare Tunnel.</figcaption>
+  </figure>
+
+</section>
+
+<section>
+  <h3>4.3 Servidor</h3>
+  <table>
+    <tr><th style="width:45mm">Item</th><th>Configuração</th></tr>
+    <tr><td>Máquina</td><td>notebook Intel Core i7-13620H (10 núcleos), 16 GB de RAM, SSD de 476 GB</td></tr>
+    <tr><td>Sistema operacional</td><td>Windows 11 Pro</td></tr>
+    <tr><td>Java</td><td>JDK 21 LTS</td></tr>
+    <tr><td>Banco</td><td>MySQL Community 8.4.3 LTS (versão zip, sem serviço do Windows)</td></tr>
+    <tr><td>Túnel</td><td>cloudflared 2026.10 (Cloudflare Tunnel, modo <i>quick tunnel</i>)</td></tr>
+    <tr><td>Pasta do servidor</td><td><code>C:\Users\&lt;usuário&gt;\JCondoServidor</code>, fora do repositório: binários, dados, logs, backups e <code>config.json</code> com os segredos</td></tr>
+    <tr><td>Consumo medido</td><td>aplicação em torno de 430 MB de RAM e MySQL em torno de 240 MB</td></tr>
+  </table>
+
+  <h3>4.4 MySQL</h3>
+  <p>O script <code>instalar.cmd</code> extrai o MySQL, gera o <code>my.ini</code>, inicializa a pasta de dados e cria o banco e o usuário da aplicação.</p>
+  <table>
+    <tr><th style="width:55mm">Configuração</th><th style="width:42mm">Valor</th><th>Motivo</th></tr>
+    <tr><td><code>bind-address</code></td><td><code>127.0.0.1</code></td><td>só aceita conexões do próprio servidor</td></tr>
+    <tr><td><code>port</code> / <code>mysqlx</code></td><td><code>3306</code> / <code>OFF</code></td><td>porta padrão local; protocolo X desligado</td></tr>
+    <tr><td><code>character-set-server</code></td><td><code>utf8mb4</code> (<code>unicode_ci</code>)</td><td>acentos e emojis</td></tr>
+    <tr><td><code>default-time-zone</code></td><td><code>-03:00</code></td><td>horário de Brasília</td></tr>
+    <tr><td><code>max_connections</code></td><td><code>50</code></td><td>sobra para o pool de 5 da aplicação</td></tr>
+    <tr><td><code>innodb_buffer_pool_size</code></td><td><code>256M</code></td><td>banco inteiro em memória sem pesar no computador</td></tr>
+    <tr><td>usuário <code>root</code></td><td>senha aleatória (24)</td><td>só para backup e desligamento</td></tr>
+    <tr><td>usuário <code>jcondo</code></td><td>senha aleatória (24)</td><td>acesso apenas ao banco <code>jcondo</code> (menor privilégio)</td></tr>
+  </table>
+  <p>As tabelas são criadas pela aplicação na primeira subida (JPA), e o esquema equivalente está em <code>app/database/jcondo.sql</code>.</p>
+
+  <h3>4.5 Aplicação</h3>
+  <p>O <code>iniciar.cmd</code> sobe o <code>jcondo.jar</code> e passa a configuração por variáveis de ambiente, lidas no <code>application.properties</code>. Nenhuma senha fica no código.</p>
+  <table>
+    <tr><th style="width:42mm">Parâmetro</th><th style="width:58mm">Valor</th><th>Uso</th></tr>
+    <tr><td><code>server.address</code> / <code>port</code></td><td><code>127.0.0.1</code> / <code>8080</code></td><td>só o túnel alcança a aplicação</td></tr>
+    <tr><td><code>DB_URL</code></td><td><code>jdbc:mysql://127.0.0.1:3306/jcondo</code></td><td>banco local</td></tr>
+    <tr><td><code>DB_USERNAME</code> / <code>DB_PASSWORD</code></td><td><code>jcondo</code> / do <code>config.json</code></td><td>usuário restrito</td></tr>
+    <tr><td><code>JWT_SECRET</code></td><td>48 caracteres aleatórios</td><td>assinatura dos tokens</td></tr>
+    <tr><td><code>SEED_DEMO</code> / <code>SHOW_SQL</code></td><td><code>true</code> / <code>false</code></td><td>dados de exemplo; sem SQL no log</td></tr>
+    <tr><td><code>TZ</code> / JVM</td><td><code>America/Sao_Paulo</code> / <code>-Xmx512m</code></td><td>fuso das reservas; limite de memória</td></tr>
+  </table>
+  <p>Por trás do túnel a requisição chega em HTTP. A opção <code>server.forward-headers-strategy=native</code> faz a aplicação saber que o usuário está em HTTPS, e um filtro redireciona para <code>https://</code> quem entra por <code>http://</code>.</p>
+</section>
+
+<section>
+  <h3>4.6 Cloudflare Tunnel</h3>
+  <p>O <code>cloudflared</code> roda com <code>tunnel --url http://127.0.0.1:8080</code> e abre conexões criptografadas de saída (QUIC, com HTTP/2 de reserva) até a borda mais próxima, que nos testes foi São Paulo. Ele devolve um endereço <code>https://&lt;nome&gt;.trycloudflare.com</code> com certificado válido, sem conta, domínio nem cartão. Como o endereço muda a cada abertura do túnel, o <code>iniciar.cmd</code> lê o endereço no log, mostra na tela, salva em <code>url-publica.txt</code> e confere o <i>health check</i> por ele. O QR code do painel do síndico usa o endereço atual, então sempre aponta para o link certo.</p>
+  <pre> JCondo no ar
+ Painel do sindico : https://&lt;nome&gt;.trycloudflare.com/login
+ App do morador    : https://&lt;nome&gt;.trycloudflare.com/app/
+ API (Swagger)     : https://&lt;nome&gt;.trycloudflare.com/swagger-ui/index.html
+ Health check      : https://&lt;nome&gt;.trycloudflare.com/actuator/health</pre>
+
+  <h3>4.7 Segurança</h3>
+  <ul>
+    <li><b>Rede:</b> nada escuta em <code>0.0.0.0</code> (conferido com <code>netstat</code>); roteador e firewall do Windows sem alteração;</li>
+    <li><b>Transporte:</b> HTTPS até o usuário, com redirecionamento de HTTP, e túnel criptografado até o servidor;</li>
+    <li><b>Segredos:</b> senhas e chave do JWT geradas com gerador criptográfico, guardadas fora do Git e passadas ao MySQL por arquivo temporário, nunca na linha de comando;</li>
+    <li><b>Banco:</b> usuário da aplicação com permissão só no banco <code>jcondo</code>;</li>
+    <li><b>Aplicação:</b> sessão com CSRF no painel, JWT (HS256, 12 h) na API, senhas com BCrypt e perfis conferidos em cada operação.</li>
+  </ul>
+
+  <h3>4.8 Publicação (CI/CD) e operação</h3>
+  <p>No GitHub Actions, cada push ou pull request roda os 30 testes. Em push na <code>main</code>, o pipeline cria uma <i>Release</i> com o <code>jcondo.jar</code> já testado. Como o servidor não aceita conexões de fora, o deploy é do tipo <i>pull</i>: o <code>atualizar.cmd</code> baixa a última Release, guarda a versão anterior, troca e espera o <i>health check</i>.</p>
+  <table>
+    <tr><th style="width:42mm">Comando</th><th>O que faz</th></tr>
+    <tr><td><code>infra\instalar.cmd</code></td><td>monta o servidor uma vez: MySQL, cloudflared, banco, usuário, segredos e aplicação</td></tr>
+    <tr><td><code>infra\iniciar.cmd</code></td><td>sobe MySQL, aplicação e túnel e mostra os endereços públicos</td></tr>
+    <tr><td><code>infra\atualizar.cmd</code></td><td>publica a última Release sem fechar o túnel (o link continua o mesmo)</td></tr>
+    <tr><td><code>infra\backup.cmd</code></td><td><code>mysqldump</code> do banco, mantendo os 7 mais recentes</td></tr>
+    <tr><td><code>infra\parar.cmd</code></td><td>fecha o túnel, para a aplicação e desliga o MySQL de forma limpa</td></tr>
+  </table>
+  <p>Para acompanhar o servidor há o <i>health check</i> (que inclui o banco), os logs <code>app.log</code>, <code>mysql-erros.log</code> e <code>tunel.log</code>, e as métricas do túnel em <code>127.0.0.1:20241/metrics</code>.</p>
+</section>
+
+<section>
+  <figure>
+    <img src="../diagrama-devops-v2.png" alt="" style="width:100%">
+    <figcaption>Figura 4: ciclo DevOps da versão 2, com testes no CI, Release no CD e deploy por <i>pull</i> no servidor.</figcaption>
+  </figure>
+
+  <h3>4.9 Custos, limitações e evolução</h3>
+  <p>O custo é zero: o servidor é o próprio computador, e MySQL Community, Java e Cloudflare Tunnel são gratuitos. A principal limitação é que o sistema só fica no ar com o computador ligado, e o endereço muda a cada vez que o túnel é aberto. Os próximos passos naturais são levar a mesma pasta para uma máquina sempre ligada (um mini PC ou uma VPS), registrar MySQL, aplicação e túnel como serviços, usar um <i>named tunnel</i> da Cloudflare com domínio próprio para ter endereço fixo e agendar o backup. Como a API é stateless, é possível rodar mais de uma instância da aplicação sem mudar o código.</p>
+
+  <h3>4.10 Como reproduzir</h3>
+  <pre>git clone https://github.com/jorgensc/PEIV.git
+cd PEIV
+infra\instalar.cmd
+infra\iniciar.cmd</pre>
+  <p>A descrição completa, com todos os parâmetros e a solução dos problemas mais comuns, está no arquivo <code>doc/infraestrutura.md</code> do repositório.</p>
+</section>
+
+</body>
+</html>
