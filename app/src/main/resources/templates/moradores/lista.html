@@ -48,7 +48,7 @@
                                     <th scope="col">Nome</th>
                                     <th scope="col">Apto</th>
                                     <th scope="col">Bloco</th>
-                                    <th scope="col">CPF</th>
+                                    <th scope="col" class="jc-oculta-tablet">CPF</th>
                                     <th scope="col">Telefone</th>
                                     <th scope="col">E-mail</th>
                                     <th scope="col" class="text-end">Ações</th>
@@ -60,7 +60,7 @@
                                     <td class="jc-td-titulo fw-semibold" data-label="Nome" th:text="${m.nome}">Nome</td>
                                     <td data-label="Apartamento"><span class="jc-tag" th:text="${m.apartamento}">101</span></td>
                                     <td data-label="Bloco"><span class="jc-tag" th:text="${m.bloco}">A</span></td>
-                                    <td data-label="CPF" class="text-nowrap" th:text="${m.cpf}">000.000.000-00</td>
+                                    <td data-label="CPF" class="text-nowrap jc-oculta-tablet" th:text="${m.cpf}">000.000.000-00</td>
                                     <td data-label="Telefone" class="text-nowrap">
                                         <a class="text-decoration-none" th:href="'tel:' + ${#strings.replace(#strings.replace(#strings.replace(#strings.replace(m.telefone,' ',''),'(',''),')',''),'-','')}"
                                            th:text="${m.telefone}">(00) 00000-0000</a>

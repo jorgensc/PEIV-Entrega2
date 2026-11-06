@@ -495,6 +495,7 @@ a.jc-kpi:hover {
 
     /* primeira celula vira o titulo do cartao */
     .jc-tabela td.jc-td-titulo {
+        display: block;
         font-size: 1.05rem;
         font-weight: 600;
         text-align: left;
@@ -774,6 +775,13 @@ a.jc-kpi:hover {
     color: #9cc0ff;
 }
 
+/* tablet: tira colunas menos importantes pra tabela caber sem rolagem lateral */
+@media (min-width: 768px) and (max-width: 1199.98px) {
+    .jc-oculta-tablet {
+        display: none;
+    }
+}
+
 /* ---------- tablet ---------- */
 @media (min-width: 576px) {
     .jc-form-acoes {
@@ -804,7 +812,9 @@ a.jc-kpi:hover {
         padding: 0 12px 16px;
     }
 
+    /* o bootstrap esconde o cabecalho do offcanvas no desktop, aqui ele fica visivel */
     .jc-sidebar .offcanvas-header {
+        display: flex !important;
         padding: 22px 8px 8px;
     }
 
@@ -825,5 +835,21 @@ a.jc-kpi:hover {
         display: flex;
         flex-direction: column;
         justify-content: space-between;
+    }
+}
+
+/* notebook pequeno (menu fixo ocupa espaco): celulas mais justas */
+@media (min-width: 992px) and (max-width: 1199.98px) {
+    .jc-main {
+        padding: 24px 20px 32px;
+    }
+
+    .jc-tabela td,
+    .jc-tabela thead th {
+        padding: 10px 8px;
+    }
+
+    .jc-tabela .jc-tag {
+        padding: 3px 6px;
     }
 }
