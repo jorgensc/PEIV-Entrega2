@@ -27,7 +27,7 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     });
 
-    // QR code apontando pro app do morador (usa o endereco atual, local ou Azure)
+    // QR code apontando pro app do morador (usa o endereco atual, local ou o link do tunel)
     document.querySelectorAll('[data-qr]').forEach(el => {
         if (typeof qrcode === 'undefined') return;
         const url = new URL(el.dataset.qr, window.location.origin).href;

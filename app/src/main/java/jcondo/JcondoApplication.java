@@ -9,7 +9,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 public class JcondoApplication {
 
 	public static void main(String[] args) {
-		// o App Service roda em UTC; o condominio fica no horario de Brasilia
+		// o servidor pode estar em outro fuso; o condominio fica no horario de Brasilia
 		TimeZone.setDefault(TimeZone.getTimeZone("America/Sao_Paulo"));
 		SpringApplication.run(JcondoApplication.class, args);
 	}

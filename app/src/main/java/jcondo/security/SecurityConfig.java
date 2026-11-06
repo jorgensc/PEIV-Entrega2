@@ -112,7 +112,7 @@ public class SecurityConfig {
         return new BCryptPasswordEncoder();
     }
 
-    // chave HS256 derivada do segredo (JWT_SECRET no Azure)
+    // chave HS256 derivada do segredo (variavel JWT_SECRET no servidor)
     @Bean
     public SecretKey chaveJwt(@Value("${jcondo.jwt.secret}") String segredo) throws NoSuchAlgorithmException {
         byte[] hash = MessageDigest.getInstance("SHA-256").digest(segredo.getBytes(StandardCharsets.UTF_8));

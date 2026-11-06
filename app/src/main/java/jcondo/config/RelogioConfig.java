@@ -7,7 +7,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
-// o servidor do Azure roda em UTC, entao "hoje" e "agora" sempre pelo fuso do condominio
+// o servidor pode estar em UTC, entao "hoje" e "agora" sempre pelo fuso do condominio
 @Configuration
 public class RelogioConfig {
 
