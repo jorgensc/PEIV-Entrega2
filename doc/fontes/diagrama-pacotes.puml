@@ -1,0 +1,137 @@
+@startuml diagrama-pacotes
+!pragma layout smetana
+skinparam dpi 150
+skinparam defaultFontName "Segoe UI"
+skinparam defaultFontSize 12
+skinparam shadowing false
+skinparam packageStyle folder
+skinparam packageBackgroundColor #FFFFFF
+skinparam packageBorderColor #37474F
+skinparam classBackgroundColor #E3F2FD
+skinparam classBorderColor #1565C0
+skinparam arrowColor #37474F
+hide empty members
+hide circle
+title Diagrama de Pacotes - JCondo v2 (arquitetura em camadas)
+
+package "jcondo" {
+  class JcondoApplication <<SpringBootApplication>>
+
+  package "api" <<camada de apresentação - REST /api/v1>> {
+    class AuthApiController
+    class MoradorApiController
+    class AvisoApiController
+    class AreaApiController
+    class ReservaApiController
+    class OcorrenciaApiController
+    class ResumoApiController
+    class ApiExceptionHandler <<RestControllerAdvice>>
+    package "dto" {
+      class "AuthDtos, MoradorDtos,\nAvisoDtos, AreaDtos,\nReservaDtos, OcorrenciaDtos,\nResumoResponse" as dtos <<record>>
+    }
+  }
+
+  package "controller" <<camada de apresentação - telas>> {
+    class PainelController
+    class MoradorController
+    class AvisoController
+    class AreaController
+    class ReservaController
+    class OcorrenciaController
+    class HomeController
+  }
+
+  package "security" <<segurança>> {
+    class SecurityConfig <<Configuration>>
+    class TokenService <<Service>>
+    class UsuarioLogado <<record>>
+    class UsuarioLogadoResolver
+    class ApiErroSeguranca
+    class LoginSucessoHandler
+  }
+
+  package "service" <<camada de negócio>> {
+    class AuthService
+    class MoradorService
+    class AvisoService
+    class AreaComumService
+    class ReservaService
+    class OcorrenciaService
+  }
+
+  package "repository" <<camada de persistência>> {
+    interface UsuarioRepository
+    interface MoradorRepository
+    interface AvisoRepository
+    interface AreaComumRepository
+    interface ReservaRepository
+    interface OcorrenciaRepository
+  }
+
+  package "entity" <<modelo de domínio>> {
+    class Usuario <<Entity>>
+    class Morador <<Entity>>
+    class Aviso <<Entity>>
+    class AreaComum <<Entity>>
+    class Reserva <<Entity>>
+    class Ocorrencia <<Entity>>
+    class "Perfil, CategoriaAviso,\nStatusReserva, StatusOcorrencia,\nCategoriaOcorrencia" as enums <<enum>>
+  }
+
+  package "exception" <<exceções de negócio>> {
+    class NaoEncontradoException
+    class ConflitoException
+    class RegraNegocioException
+  }
+
+  package "config" <<configuração>> {
+    class SwaggerConfig
+    class WebConfig
+    class RelogioConfig
+    class DadosDemonstracao
+  }
+}
+
+package "resources" {
+  package "templates" <<Thymeleaf>> {
+    class "layout, login, painel,\nmoradores/, avisos/, areas/,\nreservas/, ocorrencias/" as views <<view>>
+  }
+  package "static" <<estático>> {
+    class "css/style.css\njs/painel.js" as estatico <<stylesheet/script>>
+    package "app" <<PWA>> {
+      class "index.html, manifest.webmanifest,\nsw.js, js/app.js, js/api.js,\njs/telas.js, css/app.css" as pwa <<PWA>>
+    }
+  }
+}
+
+package "org.springframework.web" as fweb <<framework>> {
+}
+package "org.springframework.security" as fsec <<framework>> {
+}
+package "org.springframework.data.jpa" as fjpa <<framework>> {
+}
+package "jakarta.persistence / jakarta.validation" as fjak <<biblioteca>> {
+}
+package "io.swagger.v3 (springdoc)" as fsw <<biblioteca>> {
+}
+
+api ..> service : <<use>>
+api ..> security : <<use>>
+api ..> exception : <<use>>
+controller ..> service : <<use>>
+controller ..> templates : <<use>>\nretorna a view
+security ..> repository : <<use>>
+service ..> repository : <<use>>
+service ..> exception : <<use>>
+service ..> entity : <<use>>
+repository ..> entity : <<use>>
+config ..> repository : <<use>>
+pwa ..> api : <<HTTP JSON>>\nconsome
+templates ..> estatico : <<use>>
+
+api ..> fweb : <<import>>
+security ..> fsec : <<import>>
+repository ..> fjpa : <<import>>
+entity ..> fjak : <<import>>
+config ..> fsw : <<import>>
+@enduml

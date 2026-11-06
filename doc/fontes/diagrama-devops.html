@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<title>Diagrama DevOps - JCondo v2</title>
+<style>
+  * { box-sizing: border-box; }
+  body { margin: 0; width: 2000px; height: 1220px; background: #fff; font-family: "Segoe UI", Arial, sans-serif; color: #1f2937; position: relative; }
+  h1 { text-align: center; margin: 22px 0 2px; font-size: 30px; }
+  .sub { text-align: center; color: #5b6474; font-size: 17px; margin: 0; }
+  .etapa { position: absolute; border: 2.5px solid; border-radius: 16px; overflow: hidden; }
+  .etapa h2 { margin: 0; color: #fff; font-size: 17px; letter-spacing: .04em; text-align: center; padding: 9px 6px; }
+  .corpo { padding: 14px 16px; display: flex; flex-direction: column; gap: 10px; }
+  .caixa { background: #fff; border: 1.5px solid #4b5563; border-radius: 9px; padding: 8px 10px; text-align: center; font-size: 13.5px; line-height: 1.3; }
+  .caixa b { display: block; font-size: 15px; }
+  .nota { background: #fffbea; border-color: #e0a800; }
+  .seta { text-align: center; color: #37474f; font-size: 18px; line-height: 6px; margin: -4px 0; }
+  svg { position: absolute; left: 0; top: 0; pointer-events: none; }
+  .legenda { position: absolute; left: 40px; bottom: 18px; display: flex; gap: 40px; font-size: 15px; color: #374151; align-items: center; }
+  .legenda span { display: inline-flex; align-items: center; gap: 10px; }
+</style>
+</head>
+<body>
+<h1>Diagrama de Arquitetura DevOps - JCondo v2</h1>
+<p class="sub">ciclo contínuo: planejar, codificar, versionar, integrar (CI), provisionar (IaC), entregar (CD), operar e monitorar</p>
+
+<!-- linha de cima -->
+<div class="etapa" style="left:30px;top:100px;width:330px;height:470px;border-color:#8e24aa;background:#f3e5f5">
+  <h2 style="background:#8e24aa">1. PLANEJAR</h2>
+  <div class="corpo">
+    <div class="caixa"><b>GitHub Issues</b>requisitos, bugs e melhorias</div>
+    <div class="seta">▼</div>
+    <div class="caixa"><b>GitHub Projects</b>quadro Kanban<br>A fazer / Fazendo / Feito</div>
+    <div class="caixa nota"><b>Entregas da disciplina</b>E1: arquitetura e diagramas<br>E2: responsivo, PWA, API e infra</div>
+  </div>
+</div>
+
+<div class="etapa" style="left:390px;top:100px;width:380px;height:470px;border-color:#1e88e5;background:#e3f2fd">
+  <h2 style="background:#1e88e5">2. CODIFICAR</h2>
+  <div class="corpo">
+    <div class="caixa"><b>Desenvolvedor</b>VS Code / IntelliJ<br>Java 21 + Maven Wrapper</div>
+    <div class="seta">▼</div>
+    <div class="caixa"><b>Ambiente local</b>perfil local (H2) ou MySQL do XAMPP<br>./mvnw spring-boot:run</div>
+    <div class="seta">▼</div>
+    <div class="caixa"><b>Painel + PWA + API</b>testes no navegador em 390, 820 e 1440 px<br>modo offline no DevTools</div>
+    <div class="seta">▼</div>
+    <div class="caixa"><b>branch feature/*</b>commit + push</div>
+  </div>
+</div>
+
+<div class="etapa" style="left:800px;top:100px;width:360px;height:470px;border-color:#546e7a;background:#eceff1">
+  <h2 style="background:#546e7a">3. VERSIONAR</h2>
+  <div class="corpo">
+    <div class="caixa"><b>Repositório GitHub</b>jorgensc/PEIV (branch main)</div>
+    <div class="seta">▼</div>
+    <div class="caixa"><b>Pull Request para a main</b>revisão do código<br>CI tem que passar</div>
+    <div class="seta">▼</div>
+    <div class="caixa"><b>Merge na main</b>código aprovado vai para produção</div>
+  </div>
+</div>
+
+<div class="etapa" style="left:1190px;top:100px;width:780px;height:470px;border-color:#43a047;background:#e8f5e9">
+  <h2 style="background:#43a047">4. INTEGRAÇÃO CONTÍNUA (CI) - GitHub Actions</h2>
+  <div class="corpo" style="display:grid;grid-template-columns:1fr 1fr;gap:12px 20px">
+    <div class="caixa"><b>checkout do código</b></div>
+    <div class="caixa"><b>setup-java: Temurin 21</b>com cache do Maven</div>
+    <div class="caixa"><b>./mvnw verify</b>compila o projeto</div>
+    <div class="caixa"><b>17 testes unitários</b>JUnit 5 + Mockito<br>regras de reserva e moradores</div>
+    <div class="caixa" style="grid-column:span 2"><b>12 testes de integração da API</b>Spring Boot + MockMvc + H2 em memória: login JWT, 401, 403, 409 (conflito de reserva), 400 (validação), fluxo de ocorrência, health check</div>
+    <div class="caixa nota"><b>artefato jcondo.jar</b>upload-artifact</div>
+    <div class="caixa nota"><b>relatório dos testes</b>surefire-reports</div>
+  </div>
+</div>
+
+<!-- linha de baixo -->
+<div class="etapa" style="left:30px;top:630px;width:400px;height:470px;border-color:#d81b60;background:#fce4ec">
+  <h2 style="background:#d81b60">8. MONITORAR</h2>
+  <div class="corpo">
+    <div class="caixa"><b>Application Insights</b>requisições, tempo de resposta,<br>falhas e Live Metrics</div>
+    <div class="caixa"><b>Log stream + Log Analytics</b>logs do Spring Boot (30 dias)</div>
+    <div class="caixa"><b>/actuator/health</b>usado pelo pipeline e pelo deploy</div>
+    <div class="caixa"><b>Backup do MySQL</b>automático, 7 dias de restauração</div>
+  </div>
+</div>
+
+<div class="etapa" style="left:460px;top:630px;width:560px;height:470px;border-color:#039be5;background:#e1f5fe">
+  <h2 style="background:#039be5">7. OPERAR - Microsoft Azure (rg-jcondo)</h2>
+  <div class="corpo">
+    <div class="caixa"><b>Síndico e moradores</b>navegador e PWA instalado (HTTPS)</div>
+    <div class="seta">▼</div>
+    <div class="caixa"><b>Azure App Service F1 Linux</b>Java SE 21 · jcondo.jar<br>painel /login · PWA /app · API /api/v1</div>
+    <div class="seta">▼ JDBC + TLS</div>
+    <div class="caixa"><b>Azure Database for MySQL</b>Flexible Server B1ms · banco jcondo</div>
+    <div class="caixa nota"><b>Application settings</b>DB_URL, DB_PASSWORD, JWT_SECRET, TZ</div>
+  </div>
+</div>
+
+<div class="etapa" style="left:1050px;top:630px;width:440px;height:470px;border-color:#fb8c00;background:#fff3e0">
+  <h2 style="background:#fb8c00">6. ENTREGA CONTÍNUA (CD)</h2>
+  <div class="corpo">
+    <div class="caixa"><b>job deploy</b>só em push na main<br>(environment: producao)</div>
+    <div class="seta">▼</div>
+    <div class="caixa"><b>autenticação no Azure</b>secret AZURE_WEBAPP_PUBLISH_PROFILE<br>variable AZURE_WEBAPP_NAME</div>
+    <div class="seta">▼</div>
+    <div class="caixa"><b>azure/webapps-deploy</b>publica o jcondo.jar</div>
+    <div class="seta">▼</div>
+    <div class="caixa"><b>smoke test</b>espera /actuator/health = UP<br>senão o pipeline falha</div>
+  </div>
+</div>
+
+<div class="etapa" style="left:1520px;top:630px;width:450px;height:470px;border-color:#6d4c41;background:#efebe9">
+  <h2 style="background:#6d4c41">5. INFRAESTRUTURA COMO CÓDIGO</h2>
+  <div class="corpo">
+    <div class="caixa"><b>infra/main.bicep</b>App Service, MySQL, banco, firewall,<br>Log Analytics, Application Insights</div>
+    <div class="seta">▼</div>
+    <div class="caixa"><b>infra/deploy.ps1</b>Azure CLI: lê as regiões liberadas,<br>gera segredos, cria tudo e publica</div>
+    <div class="seta">▼</div>
+    <div class="caixa nota"><b>ambiente reproduzível</b>recria do zero com um comando<br>remover.ps1 apaga tudo</div>
+  </div>
+</div>
+
+<svg width="2000" height="1220">
+  <defs>
+    <marker id="p" markerWidth="12" markerHeight="12" refX="10" refY="6" orient="auto" markerUnits="userSpaceOnUse"><path d="M0,0 L12,6 L0,12 z" fill="#37474f"/></marker>
+    <marker id="v" markerWidth="12" markerHeight="12" refX="10" refY="6" orient="auto" markerUnits="userSpaceOnUse"><path d="M0,0 L12,6 L0,12 z" fill="#c62828"/></marker>
+  </defs>
+  <!-- fluxo principal -->
+  <path d="M360 330 L388 330" stroke="#37474f" stroke-width="2.5" fill="none" marker-end="url(#p)"/>
+  <path d="M770 470 L785 470 L785 200 L798 200" stroke="#37474f" stroke-width="2.5" fill="none" marker-end="url(#p)"/>
+  <path d="M1160 330 L1188 330" stroke="#37474f" stroke-width="2.5" fill="none" marker-end="url(#p)"/>
+  <text x="1163" y="318" font-size="13" fill="#37474f">PR</text>
+  <path d="M1600 570 L1600 600 L1270 600 L1270 628" stroke="#37474f" stroke-width="2.5" fill="none" marker-end="url(#p)"/>
+  <text x="1290" y="595" font-size="14" fill="#37474f">build ok (push na main)</text>
+  <path d="M1050 860 L1022 860" stroke="#37474f" stroke-width="2.5" fill="none" marker-end="url(#p)"/>
+  <text x="1021" y="846" font-size="12" fill="#37474f">deploy</text>
+  <path d="M1520 750 L1505 750 L1505 1120 L740 1120 L740 1102" stroke="#6d4c41" stroke-width="2" stroke-dasharray="7 5" fill="none" marker-end="url(#p)"/>
+  <text x="1000" y="1114" font-size="13" fill="#6d4c41">provisiona os recursos</text>
+  <path d="M460 860 L432 860" stroke="#37474f" stroke-width="2.5" fill="none" marker-end="url(#p)"/>
+  <text x="433" y="846" font-size="12" fill="#37474f">logs</text>
+  <!-- feedback -->
+  <path d="M195 630 L195 572" stroke="#c62828" stroke-width="2.5" stroke-dasharray="8 6" fill="none" marker-end="url(#v)"/>
+  <text x="205" y="605" font-size="14" fill="#c62828">problema ou melhoria vira issue</text>
+  <path d="M1580 570 L1580 585 L1985 585 L1985 88 L580 88 L580 98" stroke="#c62828" stroke-width="2.5" stroke-dasharray="8 6" fill="none" marker-end="url(#v)"/>
+  <text x="1080" y="82" font-size="14" fill="#c62828">teste falhou: PR bloqueado, volta para correção</text>
+</svg>
+
+<div class="legenda">
+  <span><svg width="60" height="14" style="position:static"><path d="M0 7 L50 7" stroke="#37474f" stroke-width="2.5" marker-end="url(#p)"/></svg>fluxo principal</span>
+  <span><svg width="60" height="14" style="position:static"><path d="M0 7 L50 7" stroke="#c62828" stroke-width="2.5" stroke-dasharray="8 6" marker-end="url(#v)"/></svg>feedback (volta ao início do ciclo)</span>
+  <span><svg width="60" height="14" style="position:static"><path d="M0 7 L50 7" stroke="#6d4c41" stroke-width="2" stroke-dasharray="7 5"/></svg>infraestrutura como código</span>
+</div>
+</body>
+</html>

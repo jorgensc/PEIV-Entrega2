@@ -101,14 +101,16 @@ Com o MySQL do XAMPP: `mvnw.cmd spring-boot:run`. Depois abrir http://localhost:
 
 ## Diagramas
 
+Versão atual (Entrega 2). As fontes editáveis ficam em `doc/fontes` (PlantUML e HTML). Os diagramas da Entrega 1 continuam em `doc/diagrama-pacotes.png`, `doc/diagrama-implantacao.png` e `doc/diagrama-devops.png`.
+
 **Diagrama de pacotes**
 
-![Diagrama de pacotes](doc/diagrama-pacotes.png)
+![Diagrama de pacotes](doc/diagrama-pacotes-v2.png)
 
 **Diagrama de implantação**
 
-![Diagrama de implantação](doc/diagrama-implantacao.png)
+![Diagrama de implantação](doc/diagrama-implantacao-v2.png)
 
 **Diagrama DevOps**
 
-![Diagrama DevOps](doc/diagrama-devops.png)
+![Diagrama DevOps](doc/diagrama-devops-v2.png)

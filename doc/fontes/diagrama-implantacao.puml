@@ -1,0 +1,68 @@
+@startuml diagrama-implantacao
+!pragma layout smetana
+skinparam dpi 150
+skinparam defaultFontName "Segoe UI"
+skinparam defaultFontSize 12
+skinparam shadowing false
+skinparam nodeBackgroundColor #FFFFFF
+skinparam nodeBorderColor #37474F
+skinparam artifactBackgroundColor #E3F2FD
+skinparam artifactBorderColor #1565C0
+skinparam databaseBackgroundColor #E8F5E9
+skinparam databaseBorderColor #2E7D32
+skinparam arrowColor #37474F
+skinparam ArrowFontSize 11
+title Diagrama de Implantação - JCondo v2 (produção no Microsoft Azure)
+
+node "Celular do morador" <<device>> as cel {
+  node "Navegador / PWA instalado" <<executionEnvironment>> as nav1 {
+    artifact "App do morador\n/app (index.html, js, css)" <<artifact>> as pwa
+    artifact "sw.js" <<service worker>> as sw
+    artifact "manifest.webmanifest" <<artifact>> as man
+    database "Cache Storage\n+ localStorage\n(JWT e fila offline)" <<armazenamento local>> as cache
+  }
+}
+
+node "Computador / celular do síndico" <<device>> as pc {
+  node "Navegador Web" <<executionEnvironment>> as nav2 {
+    artifact "Painel do síndico\n(HTML Thymeleaf)" <<artifact>> as painel
+    artifact "Swagger UI" <<artifact>> as swagger
+  }
+}
+
+node "CDN jsDelivr" <<device>> as cdn {
+  artifact "Bootstrap 5\nBootstrap Icons" <<artifact>> as bs
+}
+
+node "GitHub" <<cloud>> as gh {
+  node "GitHub Actions runner\n(ubuntu-latest)" <<executionEnvironment>> as runner {
+    artifact "ci-cd.yml" <<workflow>> as wf
+  }
+}
+
+node "Microsoft Azure - grupo rg-jcondo" <<cloud>> as azure {
+  node "Azure App Service\nplano F1 Linux" <<device>> as appsvc {
+    artifact "Application settings\nDB_URL, DB_PASSWORD,\nJWT_SECRET, TZ" <<configuration>> as cfg
+    node "Java SE 21" <<executionEnvironment>> as jre {
+      node "Spring Boot 3.5 / Tomcat" <<executionEnvironment>> as boot {
+        artifact "jcondo.jar\n(painel + PWA + API /api/v1)" <<artifact>> as jar
+      }
+    }
+  }
+  node "Azure Database for MySQL\nFlexible Server B1ms" <<device>> as mysqlsrv {
+    node "MySQL 8.0" <<executionEnvironment>> as mysql {
+      database "jcondo\n(usuarios, moradores, avisos,\nareas_comuns, reservas, ocorrencias)" <<schema>> as banco
+    }
+  }
+  node "Application Insights\n+ Log Analytics" <<device>> as ai
+}
+
+nav1 -- boot : <<HTTPS/443>>\nREST JSON /api/v1\nBearer JWT
+nav2 -- boot : <<HTTPS/443>>\npáginas + sessão
+nav2 -- cdn : <<HTTPS/443>>\nCSS/JS
+boot -- mysql : <<JDBC/TCP 3306>>\nTLS obrigatório
+boot -- ai : <<HTTPS>>\ntelemetria
+runner -- appsvc : <<HTTPS>>\ndeploy do .jar\n+ health check
+cfg ..> boot : <<configura>>
+sw ..> cache : <<guarda>>
+@enduml
