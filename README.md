@@ -30,6 +30,7 @@ Usuários de demonstração: síndico `sindico@jcondo.com` / `sindico123` e mora
 |---|---|---|
 | 1 | Repositório, diagramas de pacotes, implantação e DevOps, escolha da infraestrutura | [`doc/PE-IV-Jcondo.pdf`](doc/PE-IV-Jcondo.pdf) |
 | 2 | Responsividade, versão mobile (PWA), API e configuração da infraestrutura | [`doc/PE-IV-Jcondo-Entrega2.pdf`](doc/PE-IV-Jcondo-Entrega2.pdf) |
+| Final | Apresentação | [`doc/PE-IV-Jcondo-Apresentacao.pptx`](doc/PE-IV-Jcondo-Apresentacao.pptx) |
 
 ## Entrega 2
 
