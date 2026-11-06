@@ -20,10 +20,9 @@
 
                     <div class="jc-card">
                         <div class="jc-card-topo">
-                            <h2 class="h5"><i class="bi bi-calendar2-plus me-2 text-primary"></i>Reservar para um morador</h2>
+                            <h2 class="h5"><i class="bi bi-calendar2-plus me-2 text-primary"></i>Nova reserva</h2>
                         </div>
                         <div class="jc-card-corpo">
-                            <p class="text-muted small">Use quando o pedido chegar pela portaria. Os moradores também reservam sozinhos pelo app.</p>
                             <form th:action="@{/reservas/salvar}" method="post">
                                 <div class="mb-3">
                                     <label for="areaId" class="form-label">Área comum</label>
@@ -73,8 +72,6 @@
                 </div>
             </div>
         </main>
-
-        <footer th:replace="~{layout :: rodape}"></footer>
     </div>
 </div>
 <th:block th:replace="~{layout :: scripts}"></th:block>

@@ -1,7 +1,7 @@
 // ponto de entrada do PWA: rotas, casca (abas/menu), service worker e modo offline
 import { enviarFila, fila, sessao } from './api.js';
 import {
-    telaAviso, telaAvisos, telaInicio, telaLogin, telaNovaOcorrencia, telaNovaReserva, telaNovoAviso,
+    telaAviso, telaAvisos, telaInicio, telaLogin, telaNovaOcorrencia, telaNovaReserva,
     telaOcorrencia, telaOcorrencias, telaPerfil, telaReservas
 } from './telas.js';
 import { ic, toast } from './util.js';
@@ -10,7 +10,6 @@ const ROTAS = [
     { re: /^#\/login$/, tela: telaLogin, publica: true },
     { re: /^#\/inicio$/, tela: telaInicio, aba: 'inicio', titulo: 'Início' },
     { re: /^#\/avisos$/, tela: telaAvisos, aba: 'avisos', titulo: 'Avisos' },
-    { re: /^#\/avisos\/novo$/, tela: telaNovoAviso, aba: 'avisos', titulo: 'Novo aviso', voltar: '#/avisos' },
     { re: /^#\/avisos\/(\d+)$/, tela: telaAviso, aba: 'avisos', titulo: 'Aviso', voltar: '#/avisos' },
     { re: /^#\/reservas$/, tela: telaReservas, aba: 'reservas', titulo: 'Reservas' },
     { re: /^#\/reservas\/nova$/, tela: telaNovaReserva, aba: 'reservas', titulo: 'Nova reserva', voltar: '#/reservas' },
@@ -33,7 +32,6 @@ function montarCasca() {
             <nav class="lateral" aria-label="Menu">
                 <div class="marca"><img src="icons/icon-192.png" alt="">JCondo</div>
                 ${ABAS.map(([id, nome]) => `<a href="#/${id}" data-aba="${id}">${ic(id)}${nome}</a>`).join('')}
-                <div class="rodape-lateral">App do morador · v2.0</div>
             </nav>
             <div class="area-principal">
                 <header class="topo">
@@ -106,7 +104,6 @@ function atualizarSelo() {
     const offline = !navigator.onLine || dadosDoCache;
     selo.classList.toggle('oculto', !offline);
     selo.querySelector('span').textContent = navigator.onLine ? 'Dados salvos' : 'Offline';
-    selo.title = 'Sem conexão: mostrando os últimos dados salvos no aparelho';
 }
 
 function atualizarContador() {
@@ -125,7 +122,7 @@ window.addEventListener('jcondo:fila', atualizarContador);
 
 window.addEventListener('offline', () => {
     atualizarSelo();
-    toast('Você está offline. O app continua mostrando os dados salvos.');
+    toast('Você está offline.');
 });
 
 window.addEventListener('online', async () => {
@@ -134,10 +131,8 @@ window.addEventListener('online', async () => {
     const enviadas = await enviarFila();
     atualizarContador();
     if (enviadas) {
-        toast(`Conexão de volta: ${enviadas} ocorrência(s) enviada(s) ao síndico.`);
+        toast(`${enviadas} ocorrência(s) enviada(s).`);
         if (location.hash.startsWith('#/ocorrencias')) rotear();
-    } else {
-        toast('Conexão restabelecida.');
     }
 });
 
@@ -159,7 +154,7 @@ if ('serviceWorker' in navigator) {
                 const novo = reg.installing;
                 novo?.addEventListener('statechange', () => {
                     if (novo.state === 'installed' && navigator.serviceWorker.controller) {
-                        toast('Nova versão do JCondo disponível.', {
+                        toast('Nova versão disponível.', {
                             texto: 'Atualizar',
                             aoClicar: () => novo.postMessage({ tipo: 'pular-espera' })
                         });

@@ -74,8 +74,8 @@ public class MoradorController {
             return "moradores/form";
         }
         redirect.addFlashAttribute("sucesso", novo
-                ? "Morador cadastrado! Ele já pode entrar no app com o e-mail e a senha informados."
-                : "Morador atualizado com sucesso!");
+                ? "Morador cadastrado."
+                : "Morador atualizado.");
         return "redirect:/moradores";
     }
 
@@ -83,7 +83,7 @@ public class MoradorController {
     public String excluir(@PathVariable Long id, RedirectAttributes redirect) {
         try {
             service.excluir(id);
-            redirect.addFlashAttribute("sucesso", "Morador excluído com sucesso!");
+            redirect.addFlashAttribute("sucesso", "Morador excluído.");
         } catch (NaoEncontradoException e) {
             redirect.addFlashAttribute("erro", e.getMessage());
         }

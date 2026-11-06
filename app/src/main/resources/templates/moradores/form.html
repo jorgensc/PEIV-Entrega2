@@ -94,7 +94,6 @@
                                                placeholder="morador@exemplo.com" autocomplete="email">
                                         <div class="invalid-feedback" th:errors="*{email}"></div>
                                     </div>
-                                    <div class="form-text">É o login do morador no app.</div>
                                 </div>
 
                                 <div class="mb-4">
@@ -125,8 +124,6 @@
                 </div>
             </div>
         </main>
-
-        <footer th:replace="~{layout :: rodape}"></footer>
     </div>
 </div>
 <th:block th:replace="~{layout :: scripts}"></th:block>

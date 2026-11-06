@@ -14,7 +14,6 @@
             <div class="jc-pagina-topo">
                 <div>
                     <h1>Reservas</h1>
-                    <p>Agenda das áreas comuns. O sistema não deixa dois moradores pegarem o mesmo horário.</p>
                 </div>
                 <a th:href="@{/reservas/nova}" class="btn btn-primary d-none d-sm-inline-flex align-items-center gap-2">
                     <i class="bi bi-plus-lg"></i>Nova reserva
@@ -25,9 +24,6 @@
             <form th:action="@{/reservas}" method="get" class="jc-filtros align-items-center">
                 <div class="jc-chips">
                     <a th:href="@{/reservas}" th:classappend="${data == null} ? 'ativo'">Todas</a>
-                    <a th:href="@{/reservas(data=${hoje})}" th:classappend="${data != null and data == hoje} ? 'ativo'">Hoje</a>
-                    <a th:href="@{/reservas(data=${hoje.plusDays(1)})}"
-                       th:classappend="${data != null and data == hoje.plusDays(1)} ? 'ativo'">Amanhã</a>
                 </div>
                 <div class="d-flex gap-2 flex-grow-1 flex-sm-grow-0">
                     <label class="visually-hidden" for="filtroData">Data</label>
@@ -85,13 +81,8 @@
                 <div class="jc-vazio" th:if="${#lists.isEmpty(reservas)}">
                     <i class="bi bi-calendar2"></i>Nenhuma reserva para este filtro.
                 </div>
-                <div class="jc-card-rodape" th:unless="${#lists.isEmpty(reservas)}">
-                    <span th:text="${#lists.size(reservas)}">0</span> reserva(s)
-                </div>
             </div>
         </main>
-
-        <footer th:replace="~{layout :: rodape}"></footer>
     </div>
 </div>
 

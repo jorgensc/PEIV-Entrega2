@@ -3,7 +3,7 @@
 // - API (GET): rede primeiro, cai pro cache quando nao tem internet
 // - POST/PUT/PATCH/DELETE: sempre rede (a fila de ocorrencias fica no app)
 
-const VERSAO = 'v2.0.0';
+const VERSAO = 'v2.1.0';
 const CACHE_APP = `jcondo-app-${VERSAO}`;
 const CACHE_API = 'jcondo-api';
 

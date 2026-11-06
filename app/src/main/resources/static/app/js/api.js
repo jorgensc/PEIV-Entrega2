@@ -30,10 +30,6 @@ export function usuario() {
     return sessao()?.usuario ?? null;
 }
 
-export function ehSindico() {
-    return usuario()?.perfil === 'SINDICO';
-}
-
 function salvarSessao(dados) {
     localStorage.setItem(CHAVE_SESSAO, JSON.stringify({
         token: dados.token,

@@ -42,7 +42,6 @@ export function somarDias(data, dias) {
 
 const fmtDiaSemana = new Intl.DateTimeFormat('pt-BR', { weekday: 'short' });
 const fmtMes = new Intl.DateTimeFormat('pt-BR', { month: 'short' });
-const fmtCompleta = new Intl.DateTimeFormat('pt-BR', { weekday: 'long', day: '2-digit', month: 'long' });
 const fmtCurta = new Intl.DateTimeFormat('pt-BR', { day: '2-digit', month: '2-digit', year: 'numeric' });
 const fmtHora = new Intl.DateTimeFormat('pt-BR', { hour: '2-digit', minute: '2-digit' });
 
@@ -54,15 +53,6 @@ export function diaSemana(data) {
 
 export function mesCurto(data) {
     return semPonto(fmtMes.format(data));
-}
-
-export function dataPorExtenso(iso) {
-    const t = fmtCompleta.format(paraData(iso));
-    return t.charAt(0).toUpperCase() + t.slice(1);
-}
-
-export function dataCurta(iso) {
-    return fmtCurta.format(paraData(iso));
 }
 
 export function dataHoraCurta(iso) {

@@ -48,7 +48,7 @@ public class OcorrenciaController {
                             @RequestParam(required = false) String resposta, RedirectAttributes redirect) {
         try {
             service.atualizar(id, status, resposta);
-            redirect.addFlashAttribute("sucesso", "Ocorrência atualizada. O morador vê o novo status no app.");
+            redirect.addFlashAttribute("sucesso", "Ocorrência atualizada.");
         } catch (NaoEncontradoException e) {
             redirect.addFlashAttribute("erro", e.getMessage());
             return "redirect:/ocorrencias";

@@ -5,7 +5,6 @@ import org.springframework.context.annotation.Configuration;
 
 import io.swagger.v3.oas.models.Components;
 import io.swagger.v3.oas.models.OpenAPI;
-import io.swagger.v3.oas.models.info.Contact;
 import io.swagger.v3.oas.models.info.Info;
 import io.swagger.v3.oas.models.security.SecurityRequirement;
 import io.swagger.v3.oas.models.security.SecurityScheme;
@@ -27,16 +26,8 @@ public class SwaggerConfig {
         return new OpenAPI()
                 .info(new Info()
                         .title("JCondo API")
-                        .description("""
-                                API REST do JCondo usada pelo app PWA do morador e aberta a integrações.
-
-                                **Como testar:** execute `POST /api/v1/auth/login` com um usuário de demonstração,
-                                copie o campo `token` e cole no botão **Authorize**.
-
-                                Erros seguem o padrão Problem Details (RFC 9457).""")
-                        .version("2.0.0")
-                        .contact(new Contact().name("Jorge Luiz do Nascimento")
-                                .url("https://github.com/jorgensc/PEIV")))
+                        .description("API REST do JCondo. Faça o login, copie o token e use o botão Authorize.")
+                        .version("2.0.0"))
                 .components(new Components().addSecuritySchemes("bearerAuth",
                         new SecurityScheme()
                                 .type(SecurityScheme.Type.HTTP)

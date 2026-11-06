@@ -102,8 +102,7 @@ Write-Host " Painel do sindico : $base/login"
 Write-Host " App do morador    : $base/app/"
 Write-Host " API (Swagger)     : $base/swagger-ui/index.html"
 Write-Host " Health check      : $base/actuator/health"
-if ($urlPublica) { Write-Host " (o QR code do painel ja aponta pro link publico)" }
-Write-Host " Para desligar     : .\infra\parar.ps1"
+Write-Host " Para desligar     : infra\parar.cmd"
 Write-Host "============================================================" -ForegroundColor Green
 
 if (-not $NaoAbrirNavegador) { Start-Process "$base/login" }

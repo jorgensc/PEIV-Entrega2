@@ -14,7 +14,6 @@
             <div class="jc-pagina-topo">
                 <div>
                     <h1>Áreas comuns</h1>
-                    <p>Espaços que os moradores podem reservar pelo app.</p>
                 </div>
                 <a th:href="@{/areas/novo}" class="btn btn-primary d-none d-sm-inline-flex align-items-center gap-2">
                     <i class="bi bi-plus-lg"></i>Nova área
@@ -66,8 +65,6 @@
                 <div class="jc-vazio" th:if="${#lists.isEmpty(areas)}"><i class="bi bi-house"></i>Nenhuma área cadastrada.</div>
             </div>
         </main>
-
-        <footer th:replace="~{layout :: rodape}"></footer>
     </div>
 </div>
 

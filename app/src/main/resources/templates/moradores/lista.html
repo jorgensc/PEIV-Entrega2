@@ -14,7 +14,6 @@
             <div class="jc-pagina-topo">
                 <div>
                     <h1>Moradores</h1>
-                    <p>Cadastro dos moradores e do acesso de cada um ao app.</p>
                 </div>
                 <a th:href="@{/moradores/novo}" class="btn btn-primary d-none d-sm-inline-flex align-items-center gap-2">
                     <i class="bi bi-person-plus"></i>Novo morador
@@ -35,8 +34,8 @@
                     <label class="jc-busca mb-0">
                         <span class="visually-hidden">Buscar morador</span>
                         <i class="bi bi-search"></i>
-                        <input type="search" class="form-control" placeholder="Buscar por nome, apartamento, bloco ou e-mail"
-                               data-filtro="#tabelaMoradores" data-contador="#totalMoradores">
+                        <input type="search" class="form-control" placeholder="Buscar morador"
+                               data-filtro="#tabelaMoradores">
                     </label>
                 </div>
 
@@ -84,15 +83,9 @@
                             </tbody>
                         </table>
                     </div>
-                    <div class="jc-card-rodape">
-                        <i class="bi bi-sort-alpha-down me-1"></i>
-                        <span id="totalMoradores" th:text="${#lists.size(moradores)}">0</span> morador(es), ordenados por nome.
-                    </div>
                 </div>
             </th:block>
         </main>
-
-        <footer th:replace="~{layout :: rodape}"></footer>
     </div>
 </div>
 

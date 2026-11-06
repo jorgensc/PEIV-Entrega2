@@ -70,7 +70,7 @@ public class AreaController {
             model.addAttribute("erro", e.getMessage());
             return "areas/form";
         }
-        redirect.addFlashAttribute("sucesso", nova ? "Área cadastrada!" : "Área atualizada!");
+        redirect.addFlashAttribute("sucesso", nova ? "Área cadastrada." : "Área atualizada.");
         return "redirect:/areas";
     }
 

@@ -72,7 +72,7 @@ public class ReservaController {
             model.addAttribute("hoje", service.hoje());
             return "reservas/form";
         }
-        redirect.addFlashAttribute("sucesso", "Reserva confirmada!");
+        redirect.addFlashAttribute("sucesso", "Reserva confirmada.");
         return "redirect:/reservas?data=" + data;
     }
 
@@ -80,7 +80,7 @@ public class ReservaController {
     public String cancelar(@PathVariable Long id, UsuarioLogado quem, RedirectAttributes redirect) {
         try {
             service.cancelar(id, quem);
-            redirect.addFlashAttribute("sucesso", "Reserva cancelada. O horário ficou livre novamente.");
+            redirect.addFlashAttribute("sucesso", "Reserva cancelada.");
         } catch (NaoEncontradoException | RegraNegocioException e) {
             redirect.addFlashAttribute("erro", e.getMessage());
         }

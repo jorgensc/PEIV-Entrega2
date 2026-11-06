@@ -671,65 +671,18 @@ a.jc-kpi:hover {
     background: #2259cc;
 }
 
-/* ---------- QR code do app ---------- */
-.jc-qr {
-    width: 132px;
-    height: 132px;
-    flex: 0 0 132px;
-    background: #fff;
-    border-radius: 12px;
-    padding: 8px;
-}
-
-.jc-qr svg,
-.jc-qr img {
-    width: 100%;
-    height: 100%;
-}
-
-.jc-app-card {
-    background: linear-gradient(135deg, var(--jc-primary), #2a5a94);
-    color: #fff;
-    border: 0;
-}
-
-.jc-app-card .text-muted-claro {
-    color: rgba(255, 255, 255, .75);
-}
-
-/* ---------- rodape ---------- */
-.jc-rodape {
-    text-align: center;
-    color: var(--jc-muted);
-    font-size: .8rem;
-    padding: 16px;
-}
-
 /* ---------- login ---------- */
 .jc-login {
     min-height: 100vh;
-    display: grid;
-    grid-template-columns: 1fr;
-    background: #fff;
-}
-
-.jc-login-marca {
-    display: none;
-    background: radial-gradient(circle at 20% 10%, #2a5a94 0, var(--jc-primary) 45%, var(--jc-primary-dark) 100%);
-    color: #fff;
-    padding: 48px;
-}
-
-.jc-login-form {
     display: flex;
     align-items: center;
     justify-content: center;
-    padding: 32px 20px;
+    padding: 24px 20px;
 }
 
 .jc-login-caixa {
     width: 100%;
-    max-width: 400px;
+    max-width: 380px;
 }
 
 .jc-login-logo {
@@ -741,38 +694,7 @@ a.jc-kpi:hover {
     display: grid;
     place-items: center;
     font-size: 1.6rem;
-    margin-bottom: 18px;
-}
-
-.jc-demo {
-    border: 1px dashed #c9d3e3;
-    border-radius: 12px;
-    padding: 12px 14px;
-    background: #f8fafc;
-    font-size: .875rem;
-}
-
-.jc-demo button {
-    font-size: .8rem;
-}
-
-.jc-recursos {
-    list-style: none;
-    padding: 0;
-    margin: 28px 0;
-}
-
-.jc-recursos li {
-    display: flex;
-    gap: 12px;
-    align-items: flex-start;
-    margin-bottom: 16px;
-    color: rgba(255, 255, 255, .88);
-}
-
-.jc-recursos i {
-    font-size: 1.2rem;
-    color: #9cc0ff;
+    margin-bottom: 14px;
 }
 
 /* tablet: tira colunas menos importantes pra tabela caber sem rolagem lateral */
@@ -825,16 +747,6 @@ a.jc-kpi:hover {
 
     .jc-main {
         padding: 28px 32px 40px;
-    }
-
-    .jc-login {
-        grid-template-columns: 1.1fr 1fr;
-    }
-
-    .jc-login-marca {
-        display: flex;
-        flex-direction: column;
-        justify-content: space-between;
     }
 }
 

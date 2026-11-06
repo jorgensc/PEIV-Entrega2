@@ -5,7 +5,6 @@ import java.time.Instant;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.Size;
 import jcondo.entity.Perfil;
 import jcondo.entity.Usuario;
 
@@ -35,11 +34,5 @@ public final class AuthDtos {
                             u.getMorador().getBloco(), u.getMorador().getTelefone());
             return new UsuarioResponse(u.getId(), u.getNome(), u.getEmail(), u.getPerfil(), m);
         }
-    }
-
-    public record AlterarSenhaRequest(
-            @NotBlank(message = "Informe a senha atual") String senhaAtual,
-            @NotBlank(message = "Informe a nova senha")
-            @Size(min = 6, max = 60, message = "A nova senha deve ter entre 6 e 60 caracteres") String novaSenha) {
     }
 }

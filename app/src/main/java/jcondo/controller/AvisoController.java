@@ -67,8 +67,8 @@ public class AvisoController {
         }
         service.salvar(aviso, quem.id());
         redirect.addFlashAttribute("sucesso", novo
-                ? "Aviso publicado! Ele já aparece no app dos moradores."
-                : "Aviso atualizado com sucesso!");
+                ? "Aviso publicado."
+                : "Aviso atualizado.");
         return "redirect:/avisos";
     }
 

@@ -55,7 +55,6 @@
                                               th:classappend="${#fields.hasErrors('conteudo')} ? 'is-invalid'"
                                               placeholder="Escreva o comunicado para os moradores"></textarea>
                                     <div class="invalid-feedback" th:errors="*{conteudo}"></div>
-                                    <div class="form-text">Até 2000 caracteres.</div>
                                 </div>
 
                                 <div class="jc-form-acoes">
@@ -68,8 +67,6 @@
                 </div>
             </div>
         </main>
-
-        <footer th:replace="~{layout :: rodape}"></footer>
     </div>
 </div>
 <th:block th:replace="~{layout :: scripts}"></th:block>
