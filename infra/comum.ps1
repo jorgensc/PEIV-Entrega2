@@ -8,7 +8,7 @@ $Versoes = @{
     mysql       = "8.4.3"
     mysqlUrl    = "https://cdn.mysql.com/archives/mysql-8.4/mysql-8.4.3-winx64.zip"
     cloudflared = "https://github.com/cloudflare/cloudflared/releases/latest/download/cloudflared-windows-amd64.exe"
-    jarRelease  = "https://github.com/jorgensc/PEIV/releases/latest/download/jcondo.jar"
+    jarRelease  = "https://github.com/jorgensc/PEIV-Entrega2/releases/latest/download/jcondo.jar"
 }
 
 function Caminhos([string]$pasta) {

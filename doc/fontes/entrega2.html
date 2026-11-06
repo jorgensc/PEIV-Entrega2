@@ -2,102 +2,119 @@
 <html lang="pt-BR">
 <head>
 <meta charset="UTF-8">
-<title>PE IV - JCondo - Entrega 2</title>
+<title>PE-IV-Jcondo-Entrega2</title>
 <style>
-  @page { size: A4; margin: 22mm 20mm 20mm 22mm; }
+  @page {
+    size: A4;
+    margin: 25mm 18mm 22mm 18mm;
+    @bottom-right { content: counter(page); font-family: Arial, sans-serif; font-size: 8pt; color: #333; }
+  }
   * { box-sizing: border-box; }
-  body { font-family: "Segoe UI", Arial, sans-serif; font-size: 11pt; line-height: 1.5; color: #1f2937; margin: 0; }
-  .capa { height: 252mm; display: flex; flex-direction: column; justify-content: space-between; text-align: center; page-break-after: always; }
-  .capa .inst { font-weight: 700; font-size: 13pt; }
-  .capa .disc { margin-top: 6mm; font-size: 12pt; }
-  .capa h1 { font-size: 30pt; margin: 0; color: #1e3a5f; }
-  .capa .subt { font-size: 14pt; color: #475467; margin-top: 3mm; }
-  .capa .rodape { text-align: right; }
-  h2 { font-size: 15pt; color: #1e3a5f; border-bottom: 2px solid #1e3a5f; padding-bottom: 1.5mm; margin: 0 0 4mm; page-break-after: avoid; }
-  h3 { font-size: 12pt; margin: 6mm 0 2mm; color: #14273f; page-break-after: avoid; }
-  p { margin: 0 0 3mm; text-align: justify; }
-  .secao { page-break-before: always; }
-  table { width: 100%; border-collapse: collapse; margin: 2mm 0 4mm; font-size: 10pt; page-break-inside: avoid; }
-  th { background: #1e3a5f; color: #fff; text-align: left; padding: 1.6mm 2.4mm; font-weight: 600; }
-  td { border-bottom: 1px solid #d8dee8; padding: 1.6mm 2.4mm; vertical-align: top; }
-  code { font-family: Consolas, "Courier New", monospace; font-size: 9pt; background: #eef2f7; padding: .2mm 1mm; border-radius: 1mm; }
-  figure { margin: 3mm 0 5mm; text-align: center; page-break-inside: avoid; }
-  figure img { max-width: 100%; border: 1px solid #d8dee8; border-radius: 1.5mm; }
-  figcaption { font-size: 9pt; color: #5b6474; margin-top: 1.5mm; }
-  ul { margin: 0 0 3mm 5mm; padding-left: 4mm; }
-  li { margin-bottom: 1mm; }
-  .link { font-size: 13pt; font-weight: 700; color: #2f6fed; }
+  body { font-family: Arial, Helvetica, sans-serif; font-size: 11.5pt; line-height: 1.55; color: #111; margin: 0; }
+  .capa { height: 235mm; position: relative; text-align: center; page-break-after: always; }
+  .capa .inst { font-weight: bold; font-size: 12.5pt; margin-top: 12mm; }
+  .capa .disc { font-size: 10.5pt; margin-top: 3mm; }
+  .capa h1 { position: absolute; top: 100mm; left: 0; right: 0; font-size: 26pt; margin: 0; }
+  .capa .subt { position: absolute; top: 116mm; left: 0; right: 0; font-size: 12pt; }
+  .capa .autor { position: absolute; bottom: 30mm; right: 0; text-align: right; font-size: 11pt; line-height: 2.2; }
+  h2 { font-size: 20pt; margin: 0 0 6mm; font-weight: bold; }
+  h2 .n { margin-right: 3mm; }
+  h3 { font-size: 13.5pt; margin: 7mm 0 2.5mm; font-weight: bold; }
+  h3 .n { color: #1f4e8c; margin-right: 1.5mm; }
+  p { margin: 0 0 3.5mm; text-align: justify; }
+  .quebra { page-break-before: always; }
+  table { width: 100%; border-collapse: collapse; margin: 2mm 0 5mm; font-size: 10pt; page-break-inside: avoid; }
+  th { background: #e8eef5; text-align: left; padding: 2mm 2.5mm; border: 1px solid #c9d3df; font-weight: bold; }
+  td { padding: 2mm 2.5mm; border: 1px solid #c9d3df; vertical-align: top; }
+  code { font-family: "Courier New", monospace; font-size: 9.5pt; background: #f1f3f5; padding: 0 1mm; border-radius: 1mm; }
+  .link { border: 1px solid #d5dbe3; border-left: 4px solid #1e3a5f; background: #f4f6f9; padding: 3mm 5mm; margin: 2mm 0 4mm; font-family: "Courier New", monospace; font-size: 11pt; color: #1f4e8c; }
+  ul, ol { margin: 0 0 4mm; padding-left: 6mm; }
+  li { margin-bottom: 1.5mm; text-align: justify; }
+  figure { margin: 2mm 0 4mm; text-align: center; page-break-inside: avoid; }
+  figure img { max-width: 100%; }
 </style>
 </head>
 <body>
 
 <section class="capa">
-  <div>
-    <div class="inst">UNIVERSIDADE DO OESTE DE SANTA CATARINA - UNOESC</div>
-    <div class="disc">Práticas Extensionistas IV</div>
-  </div>
-  <div>
-    <h1>JCondo</h1>
-    <div class="subt">Sistema de Gestão de Condomínio - Entrega 2</div>
-  </div>
-  <div class="rodape">
-    Jorge Luiz do Nascimento<br>
-    Chapecó - SC, 5 de novembro de 2026
-  </div>
+  <div class="inst">UNIVERSIDADE DO OESTE DE SANTA CATARINA - UNOESC</div>
+  <div class="disc">Práticas Extensionistas IV</div>
+  <h1>JCondo</h1>
+  <div class="subt">Sistema de Gestão de Condomínio - Entrega 2</div>
+  <div class="autor">Jorge Luiz do Nascimento<br>Chapecó - SC 5 de Novembro de 2026</div>
 </section>
 
 <section>
-  <h2>1. Integrantes do grupo</h2>
+  <h2><span class="n">1.</span>Integrantes do grupo</h2>
   <table>
-    <tr><th style="width:12mm">#</th><th>Nome</th></tr>
+    <tr><th style="width:14mm">#</th><th>Nome</th></tr>
     <tr><td>1</td><td>Jorge Luiz do Nascimento</td></tr>
   </table>
 
-  <h2 style="margin-top:10mm">2. Repositório no GitHub</h2>
-  <p class="link">https://github.com/jorgensc/PEIV</p>
-  <p>O repositório contém o código da aplicação responsiva (painel do síndico), da versão mobile PWA (app do morador, em <code>app/src/main/resources/static/app</code>) e da API REST (<code>/api/v1</code>), além dos scripts do servidor (<code>infra/</code>) e da descrição da infraestrutura (<code>doc/infraestrutura.md</code>).</p>
-
-  <h2 style="margin-top:10mm">3. Configuração da infraestrutura</h2>
-
-  <h3>3.1 Escolha</h3>
-  <p>Na Entrega 1 a opção era o Microsoft Azure. Na configuração, a hospedagem passou para servidor próprio (self-hosted), que não depende de conta institucional nem de crédito com prazo. O Cloudflare Tunnel resolve os pontos fracos do self-host apontados na Entrega 1: não precisa de IP público nem abrir porta no roteador, entrega HTTPS com certificado válido e mantém o banco e a aplicação fora da rede. O custo é zero.</p>
-
-  <h3>3.2 Componentes</h3>
+  <h2 style="margin-top:9mm"><span class="n">2.</span>Repositório no GitHub</h2>
+  <div class="link">https://github.com/jorgensc/PEIV-Entrega2</div>
+  <p>O repositório segue o mesmo modelo da Entrega 1 e traz os códigos pedidos nesta etapa: a aplicação responsiva, a versão mobile (PWA) e a API, além dos scripts e da descrição da infraestrutura.</p>
   <table>
-    <tr><th style="width:32mm">Componente</th><th>Configuração</th></tr>
-    <tr><td>Servidor</td><td>notebook com Windows 11</td></tr>
-    <tr><td>Aplicação</td><td>Java 21, <code>jcondo.jar</code> (Spring Boot), escuta só em <code>127.0.0.1:8080</code></td></tr>
-    <tr><td>Banco</td><td>MySQL 8.4 LTS, escuta só em <code>127.0.0.1:3306</code>, <code>utf8mb4</code>, fuso <code>-03:00</code>; usuário <code>jcondo</code> com acesso apenas ao banco <code>jcondo</code></td></tr>
-    <tr><td>Túnel</td><td><code>cloudflared tunnel --url http://127.0.0.1:8080</code>, que gera o endereço público <code>https://&lt;nome&gt;.trycloudflare.com</code></td></tr>
-    <tr><td>Configuração</td><td>variáveis de ambiente <code>DB_URL</code>, <code>DB_USERNAME</code>, <code>DB_PASSWORD</code>, <code>JWT_SECRET</code> e <code>TZ</code>; senhas geradas na instalação e guardadas fora do Git</td></tr>
+    <tr><th style="width:62mm">Caminho</th><th>Conteúdo</th></tr>
+    <tr><td><code>app/</code></td><td>aplicação Spring Boot: painel do síndico, app do morador e API</td></tr>
+    <tr><td><code>app/src/main/resources/static/app</code></td><td>versão mobile (PWA)</td></tr>
+    <tr><td><code>infra/</code></td><td>scripts para instalar, iniciar, atualizar e parar o servidor</td></tr>
+    <tr><td><code>doc/</code></td><td>este PDF, a apresentação, os diagramas e a descrição da infraestrutura</td></tr>
+    <tr><td><code>.github/workflows/ci-cd.yml</code></td><td>pipeline que roda os testes e gera cada versão</td></tr>
   </table>
+
+  <h3>Sobre a entrega</h3>
+  <p>Nesta etapa o JCondo passou a ter login com dois perfis (síndico e morador), mural de avisos, reserva de áreas comuns e registro de ocorrências. O painel do síndico foi refeito para funcionar bem no celular, no tablet e no computador. Os moradores usam um app no formato PWA, que pode ser instalado no celular e continua abrindo sem internet. As duas partes conversam com o servidor pela API REST em <code>/api/v1</code>, protegida por token JWT e documentada no Swagger.</p>
 </section>
 
-<section class="secao">
-  <h3 style="margin-top:0">3.3 Arquitetura</h3>
-  <figure>
-    <img src="../diagrama-implantacao-v2.png" alt="" style="width:100%">
-    <figcaption>Figura 1: diagrama de implantação.</figcaption>
-  </figure>
-  <p>O usuário acessa o endereço HTTPS. A Cloudflare repassa a requisição pelo túnel, que o próprio servidor abriu de dentro para fora, até o <code>cloudflared</code>, que entrega à aplicação. A aplicação usa o MySQL local.</p>
+<section class="quebra">
+  <h2><span class="n">3.</span>Configuração da infraestrutura</h2>
 
-  <h3>3.4 Segurança</h3>
+  <h3><span class="n">3.1</span>Escolha</h3>
+  <p>Na Entrega 1 a opção escolhida foi o Microsoft Azure. Na hora de configurar, a hospedagem passou para um servidor próprio (self-hosted), porque a nuvem dependia de conta institucional ativada, de regiões liberadas para estudante e de crédito com prazo. Para publicar o servidor na internet foi usado o Cloudflare Tunnel, que resolve os problemas do self-host citados na comparação da Entrega 1: não precisa de IP público nem de porta aberta no roteador, já entrega o endereço com HTTPS e certificado válido, e o banco e a aplicação ficam fora da rede. O custo é zero.</p>
+
+  <h3><span class="n">3.2</span>Componentes</h3>
+  <table>
+    <tr><th style="width:30mm">Componente</th><th>Configuração</th><th style="width:46mm">Uso</th></tr>
+    <tr><td>Servidor</td><td>notebook com Windows 11</td><td>máquina que hospeda o sistema</td></tr>
+    <tr><td>Java 21</td><td>roda o <code>jcondo.jar</code> ouvindo só em <code>127.0.0.1:8080</code></td><td>painel, app e API</td></tr>
+    <tr><td>MySQL 8.4 LTS</td><td>ouvindo só em <code>127.0.0.1:3306</code>, <code>utf8mb4</code>, fuso <code>-03:00</code>; usuário <code>jcondo</code> com acesso apenas ao banco <code>jcondo</code></td><td>banco de dados</td></tr>
+    <tr><td>cloudflared</td><td><code>tunnel --url http://127.0.0.1:8080</code></td><td>gera o endereço público <code>https://&lt;nome&gt;.trycloudflare.com</code></td></tr>
+  </table>
+  <p>A aplicação lê a conexão e os segredos de variáveis de ambiente (<code>DB_URL</code>, <code>DB_USERNAME</code>, <code>DB_PASSWORD</code>, <code>JWT_SECRET</code> e <code>TZ</code>). As senhas são geradas na instalação e ficam num arquivo do servidor, fora do repositório.</p>
+
+  <div style="break-inside: avoid">
+  <h3><span class="n">3.3</span>Arquitetura</h3>
+  <figure><img src="../diagrama-implantacao-v2.png" alt="Diagrama de implantação"></figure>
+  </div>
+  <p>O usuário acessa o endereço HTTPS. A Cloudflare repassa a requisição pelo túnel, que é aberto pelo próprio servidor de dentro para fora, até o <code>cloudflared</code>. Ele entrega a requisição para a aplicação, que usa o MySQL local.</p>
+</section>
+
+<section>
+  <h3><span class="n">3.4</span>Segurança</h3>
   <ul>
-    <li>banco e aplicação só aceitam conexão local; nenhuma porta aberta;</li>
-    <li>HTTPS até o usuário, com redirecionamento de HTTP para HTTPS;</li>
-    <li>senhas com BCrypt, token JWT na API e perfil conferido em cada operação.</li>
+    <li><b>Rede.</b> O banco e a aplicação só aceitam conexões do próprio computador, então nenhuma porta fica aberta para a internet.</li>
+    <li><b>HTTPS.</b> O acesso é sempre por HTTPS, e quem entra por HTTP é redirecionado.</li>
+    <li><b>Aplicação.</b> As senhas são guardadas com BCrypt, a API usa token JWT e cada operação confere o perfil do usuário.</li>
   </ul>
 
-  <h3>3.5 Publicação e operação</h3>
-  <p>O GitHub Actions roda os testes a cada push e, na branch <code>main</code>, gera uma Release com o <code>jcondo.jar</code>. No servidor, os scripts fazem o restante:</p>
+  <h3><span class="n">3.5</span>Publicação</h3>
+  <p>O GitHub Actions roda os testes a cada push e, na branch <code>main</code>, gera uma Release com o <code>jcondo.jar</code>. Como o servidor não aceita conexões de fora, é ele que busca a versão nova com o script <code>atualizar.cmd</code>.</p>
   <table>
-    <tr><th style="width:42mm">Script</th><th>Função</th></tr>
-    <tr><td><code>infra\instalar.cmd</code></td><td>baixa MySQL e cloudflared, cria o banco, o usuário e as senhas</td></tr>
-    <tr><td><code>infra\iniciar.cmd</code></td><td>sobe MySQL, aplicação e túnel e mostra o link</td></tr>
+    <tr><th style="width:46mm">Script</th><th>Função</th></tr>
+    <tr><td><code>infra\instalar.cmd</code></td><td>baixa o MySQL e o cloudflared, cria o banco, o usuário e as senhas</td></tr>
+    <tr><td><code>infra\iniciar.cmd</code></td><td>sobe o MySQL, a aplicação e o túnel e mostra o endereço público</td></tr>
     <tr><td><code>infra\atualizar.cmd</code></td><td>baixa a última Release e reinicia a aplicação</td></tr>
     <tr><td><code>infra\parar.cmd</code></td><td>desliga tudo</td></tr>
   </table>
-  <p>Limitação: o sistema fica no ar enquanto o servidor estiver ligado, e o link muda a cada início do túnel.</p>
+
+  <h3><span class="n">3.6</span>Como colocar no ar</h3>
+  <ol>
+    <li>Instalar o JDK 21 no servidor.</li>
+    <li>Baixar o repositório e rodar <code>infra\instalar.cmd</code>.</li>
+    <li>Rodar <code>infra\iniciar.cmd</code> e usar o endereço que aparece no final.</li>
+  </ol>
+  <p>A limitação é que o sistema fica no ar só enquanto o servidor estiver ligado, e o endereço muda cada vez que o túnel é aberto.</p>
 </section>
 
 </body>
