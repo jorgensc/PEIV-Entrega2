@@ -12,12 +12,12 @@ param location string = resourceGroup().location
 @maxLength(12)
 param prefixo string = 'jcondo'
 
-@description('Plano do App Service: F1 (gratuito, sem Always On) ou B1 (básico, recomendado na apresentação)')
+@description('Plano do App Service: F1 (gratuito, escolhido no projeto) ou B1 (básico, com Always On)')
 @allowed([
   'F1'
   'B1'
 ])
-param planoAppService string = 'B1'
+param planoAppService string = 'F1'
 
 @description('Usuário administrador do MySQL')
 param mysqlAdmin string = 'jcondoadmin'
@@ -157,7 +157,7 @@ resource app 'Microsoft.Web/sites@2023-12-01' = {
       http20Enabled: true
       minTlsVersion: '1.2'
       ftpsState: 'Disabled'
-      healthCheckPath: '/actuator/health'
+      healthCheckPath: gratuito ? null : '/actuator/health'
       appCommandLine: ''
       appSettings: [
         {

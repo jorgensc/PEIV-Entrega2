@@ -19,45 +19,41 @@ apontando pra pasta de instalação.
 ## 2. Maven (opcional)
 
 O projeto já vem com o Maven Wrapper (mvnw), então não é obrigatório instalar.
-Se quiser instalar mesmo assim:
 
-1. Baixe em https://maven.apache.org/download.cgi (o zip binário)
-2. Extraia em uma pasta, ex: C:\maven
-3. Adicione C:\maven\bin no PATH
-4. Teste com `mvn -version`
+## 3. Banco de dados
 
-## 3. Instalar o XAMPP
+Existem dois jeitos de rodar:
+
+**Sem MySQL (mais rápido):** o perfil `local` usa o banco H2 gravado na pasta
+`app/data`. Não precisa instalar nada, é só seguir pro Manual_Execucao.md.
+
+**Com o MySQL do XAMPP:**
 
 1. Baixe em https://www.apachefriends.org e instale
-2. Abra o XAMPP Control Panel
-3. Clique em Start no MySQL
-4. Se for usar o phpMyAdmin, dê Start no Apache também
+2. Abra o XAMPP Control Panel e clique em Start no MySQL
 
-O MySQL do XAMPP vem com usuário root sem senha, que é exatamente como o
-projeto está configurado.
-
-## 4. Criar o banco de dados
-
-Jeito mais fácil, pelo phpMyAdmin:
-
-1. Acesse http://localhost/phpmyadmin
-2. Aba "Importar"
-3. Escolha o arquivo `database/jcondo.sql` que está na pasta do projeto
-4. Clique em Executar
-
-Se preferir o terminal:
+O MySQL do XAMPP vem com usuário root sem senha, que é como o projeto está
+configurado. O banco `jcondo` e as tabelas são criados pela aplicação na
+primeira vez que ela sobe. Se quiser criar na mão, importe o arquivo
+`database/jcondo.sql` pelo phpMyAdmin (aba Importar) ou pelo terminal:
 
 ```
 mysql -u root < database/jcondo.sql
 ```
 
-Depois de importar, confira se o banco `jcondo` apareceu na lista da esquerda
-com a tabela `moradores` e 5 registros de exemplo.
+## 4. Azure (só pra publicar na nuvem)
+
+1. Ativar o Azure for Students em azure.microsoft.com/free/students com o e-mail da universidade
+2. Instalar o Azure CLI: `winget install Microsoft.AzureCLI`
+3. Fazer login: `az login`
+4. Na raiz do repositório: `.\infra\deploy.ps1`
+
+O passo a passo completo e a configuração de cada recurso estão em
+`doc/infraestrutura.md`.
 
 ## 5. Conferindo se está tudo pronto
 
 - `java -version` mostra a versão 21
-- MySQL aparece verde (Running) no XAMPP
-- Banco jcondo criado com a tabela moradores
+- (se for usar MySQL) MySQL aparece verde (Running) no XAMPP
 
 Se estiver tudo ok, segue pro Manual_Execucao.md.

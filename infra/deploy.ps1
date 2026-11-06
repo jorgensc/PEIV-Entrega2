@@ -4,15 +4,15 @@
   Pre-requisitos: Azure CLI (winget install Microsoft.AzureCLI), JDK 21 e login feito com "az login".
 
   Uso (na raiz do repositorio):
-    .\infra\deploy.ps1                         # plano B1, regiao escolhida pela politica da assinatura
-    .\infra\deploy.ps1 -Plano F1               # plano gratuito
+    .\infra\deploy.ps1                         # plano F1 (gratuito), regiao escolhida pela politica da assinatura
+    .\infra\deploy.ps1 -Plano B1               # plano basico com Always On
     .\infra\deploy.ps1 -Regiao eastus          # forca uma regiao
     .\infra\deploy.ps1 -SoAplicacao            # so gera o .jar e publica de novo
 #>
 param(
     [string]$GrupoRecursos = "rg-jcondo",
     [string]$Regiao = "",
-    [ValidateSet("F1", "B1")][string]$Plano = "B1",
+    [ValidateSet("F1", "B1")][string]$Plano = "F1",
     [switch]$SoAplicacao
 )
 

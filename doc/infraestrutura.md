@@ -40,7 +40,7 @@ Manter web, PWA e API no mesmo App Service foi uma decisão consciente: o PWA e 
 | Recurso | Nome (exemplo) | Configuração |
 |---|---|---|
 | Grupo de recursos | `rg-jcondo` | Agrupa tudo, com a tag `projeto=JCondo`. Apagar o grupo remove o ambiente inteiro. |
-| Plano do App Service | `jcondo-plano-xxxxxx` | Linux, SKU **B1** (1 vCPU, 1,75 GB). Pode ser trocado por F1 (gratuito) no parâmetro `planoAppService`. |
+| Plano do App Service | `jcondo-plano-xxxxxx` | Linux, SKU **F1** (gratuito: 1 GB de memória, 60 minutos de CPU por dia). Pode subir para B1 no parâmetro `planoAppService`, sem mudar mais nada. |
 | App Service (Web App) | `jcondo-xxxxxx` | Pilha `JAVA|21-java21` (Java SE, servidor embutido do Spring Boot). |
 | MySQL Flexible Server | `jcondo-mysql-xxxxxx` | Burstable **Standard_B1ms**, MySQL 8.0.21, 20 GB com crescimento automático, backup de 7 dias. |
 | Banco de dados | `jcondo` | `utf8mb4` / `utf8mb4_unicode_ci` (acentos e emojis). |
@@ -58,8 +58,8 @@ O sufixo `xxxxxx` é gerado a partir do id do grupo de recursos (`uniqueString`)
 | Versão mínima do TLS | 1.2 | Bloqueia protocolos antigos e inseguros. |
 | HTTP/2 | ligado | Carrega os arquivos do painel e do app em paralelo na mesma conexão. |
 | FTP/FTPS | desabilitado | O deploy é feito só pelo pipeline e pelo Azure CLI. |
-| Always On | ligado no B1 | Evita que a aplicação "durma" e demore para responder no primeiro acesso. No F1 não existe. |
-| Health check | `/actuator/health` | O Azure testa esse endereço e reinicia a instância se ela parar de responder. |
+| Always On | desligado no F1, ligado no B1 | No F1 a aplicação "dorme" depois de uns 20 minutos sem acesso e o primeiro acesso seguinte demora mais. No B1 ela fica sempre ligada. |
+| Health check | `/actuator/health` (B1) | No B1 o Azure testa esse endereço e troca a instância se ela parar de responder. No F1, com uma instância só, o endereço é usado pelo pipeline e pelo script de deploy para confirmar que a aplicação subiu. |
 | Afinidade de sessão (ARR) | desligada | A API é stateless (JWT), não precisa prender o usuário numa instância. |
 | Credenciais SCM básicas | liberadas | Necessárias para o perfil de publicação usado pelo GitHub Actions. |
 | Logs | aplicação (Information) e HTTP (3 dias) | Ficam disponíveis no Log stream do portal. |
@@ -135,13 +135,13 @@ Valores aproximados de referência, que devem ser conferidos na calculadora de p
 
 | Recurso | Custo estimado |
 |---|---|
-| App Service B1 Linux | cerca de US$ 13 a 18 por mês (F1: gratuito) |
+| App Service F1 Linux (escolhido) | gratuito |
 | MySQL Flexible B1ms + 20 GB | coberto pelas 750 horas mensais gratuitas por 12 meses; fora disso, cerca de US$ 15 por mês |
 | Application Insights / Log Analytics | dentro da franquia gratuita de 5 GB por mês |
 
-Com os US$ 100 de crédito do Azure for Students, o ambiente B1 fica no ar por vários meses. Depois da apresentação o plano pode descer para F1 (`.\infra\deploy.ps1 -Plano F1`) ou o grupo inteiro pode ser apagado com `.\infra\remover.ps1`.
+O plano F1 foi escolhido para não consumir o crédito de US$ 100 do Azure for Students. A contrapartida é que ele não tem Always On: depois de uns 20 minutos sem acesso a aplicação é descarregada e o próximo acesso leva de 1 a 2 minutos para religar o Spring Boot. Para a apresentação, basta abrir o endereço alguns minutos antes. Se o sistema passasse a ser usado de verdade por um condomínio, o primeiro ajuste seria subir para o B1 (cerca de US$ 13 a 18 por mês) com `.\infra\deploy.ps1 -Plano B1`, sem mudar código. O ambiente inteiro pode ser apagado com `.\infra\remover.ps1`.
 
-Para crescer, não é preciso mudar a arquitetura: basta subir o plano (B1 para S1 ou P1v3, que permitem várias instâncias e escala automática) e a camada do banco (B1ms para B2s ou General Purpose). Como a API é stateless, várias instâncias funcionam sem ajuste no código.
+Para crescer, não é preciso mudar a arquitetura: basta subir o plano (F1 para B1, S1 ou P1v3, que permitem várias instâncias e escala automática) e a camada do banco (B1ms para B2s ou General Purpose). Como a API é stateless, várias instâncias funcionam sem ajuste no código.
 
 ## 9. Passo a passo para criar o ambiente
 
@@ -169,5 +169,5 @@ No GitHub, em *Settings > Secrets and variables > Actions*, cadastrar a variable
 
 - **`RequestDisallowedByAzure` ou região não permitida:** a assinatura de estudante bloqueia a região. Rodar de novo informando outra: `.\infra\deploy.ps1 -Regiao eastus`.
 - **MySQL indisponível na região:** algumas regiões não aceitam novos servidores para contas de estudante. Mesma solução, trocar a região.
-- **Aplicação demora a responder no F1:** o plano gratuito não tem Always On e tem cota de CPU diária. Para a apresentação, usar o B1.
+- **Aplicação demora a responder no F1:** o plano gratuito não tem Always On e tem cota de CPU diária. Abrir o endereço uns minutos antes de usar, ou subir para o B1.
 - **Erro de conexão com o banco:** conferir no portal se a regra `PermitirServicosAzure` existe no firewall do MySQL e se a `DB_URL` tem `sslMode=REQUIRED`.

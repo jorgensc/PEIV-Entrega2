@@ -1,54 +1,59 @@
 # Manual de Execução - JCondo
 
-Antes de começar: o ambiente precisa estar montado conforme o Manual_Instalacao.md
-(Java 21, MySQL do XAMPP rodando e banco jcondo importado).
+Antes de começar: o ambiente precisa estar montado conforme o Manual_Instalacao.md.
 
-## 1. Ligar o MySQL
+## 1. Rodar a aplicação
 
-Abra o XAMPP Control Panel e clique em Start no MySQL.
-
-## 2. Rodar a aplicação
-
-Abra o terminal na pasta raiz do projeto (onde está o pom.xml) e rode:
+Abra o terminal na pasta `app` (onde está o pom.xml) e rode um dos comandos:
 
 ```
-mvnw.cmd spring-boot:run        (Windows)
-./mvnw spring-boot:run          (Linux/Mac)
+mvnw.cmd spring-boot:run -Dspring-boot.run.profiles=local     (sem MySQL, Windows)
+mvnw.cmd spring-boot:run                                      (com MySQL do XAMPP)
+./mvnw spring-boot:run -Dspring-boot.run.profiles=local       (Linux/Mac)
 ```
 
 Na primeira vez o Maven baixa as dependências, então demora um pouco e precisa
 de internet. Quando aparecer "Started JcondoApplication" no console, está no ar.
+Com o banco vazio, a aplicação já carrega dados de exemplo.
 
-## 3. Abrir o sistema
+## 2. Painel do síndico
 
-http://localhost:8080
+http://localhost:8080 (cai na tela de login)
 
-Já redireciona pra tela de moradores, que mostra a tabela ordenada por nome
-com os botões de ação:
+Usuário: `sindico@jcondo.com` / senha `sindico123` (tem um botão que preenche).
 
-- Novo: abre o formulário de cadastro
-- Lápis (editar): abre o formulário preenchido com os dados do morador
-- Lixeira (excluir): pede confirmação e remove o registro
+- **Painel:** números do condomínio, próximas reservas, ocorrências aguardando e QR code do app
+- **Moradores:** cadastro com a senha de acesso do morador ao app
+- **Avisos:** publicar, editar e excluir (o que for publicado aparece no app)
+- **Reservas:** agenda com filtro por data, reservar em nome de um morador, cancelar
+- **Ocorrências:** filtrar por status, abrir, mudar status e responder ao morador
+- **Áreas comuns:** horário de funcionamento, capacidade e desativar
 
-Depois de salvar ou excluir aparece uma mensagem verde de sucesso no topo.
-Se algum campo do formulário estiver inválido, o campo fica vermelho com a
-mensagem de erro embaixo.
+Para ver a responsividade, diminua a janela do navegador ou use o modo
+dispositivo do DevTools (F12, Ctrl+Shift+M).
 
-## 4. Abrir o Swagger
+## 3. App do morador (PWA)
 
-Com a aplicação rodando:
+http://localhost:8080/app/
+
+Usuário: `ana.souza@email.com` / senha `morador123` (os outros moradores usam
+a mesma senha). No Chrome/Edge aparece o botão de instalar o app.
+
+Para testar o modo offline: abra as telas uma vez, depois no DevTools vá em
+Network e marque "Offline". O app continua abrindo, mostra o selo "Offline" e
+uma ocorrência registrada fica na fila até a internet voltar.
+
+## 4. API e Swagger
 
 http://localhost:8080/swagger-ui/index.html
 
-Lá estão documentados os endpoints da API REST:
+1. Abra `POST /api/v1/auth/login`, clique em "Try it out" e envie
+   `{"email":"sindico@jcondo.com","senha":"sindico123"}`
+2. Copie o campo `token` da resposta
+3. Clique em **Authorize**, cole o token e confirme
+4. Agora dá pra testar todas as rotas
 
-- GET /api/moradores - lista todos
-- GET /api/moradores/{id} - busca por id
-- POST /api/moradores - cadastra
-- PUT /api/moradores/{id} - atualiza
-- DELETE /api/moradores/{id} - exclui
-
-Dá pra testar direto pela interface usando o botão "Try it out".
+A lista completa está em `doc/api.md`.
 
 ## 5. Rodar os testes
 
@@ -56,13 +61,7 @@ Dá pra testar direto pela interface usando o botão "Try it out".
 mvnw.cmd test
 ```
 
-Roda os testes unitários do service (com Mockito, sem precisar de banco).
-Pra rodar também o teste de integração, que sobe o Spring inteiro e precisa
-do MySQL ligado:
-
-```
-mvnw.cmd test -Dtest.integration=true
-```
+Roda os 30 testes (unitários e de integração da API). Nenhum precisa de MySQL.
 
 ## 6. Parar a aplicação
 
@@ -70,8 +69,7 @@ Ctrl + C no terminal.
 
 ## Problemas comuns
 
-- "Communications link failure": o MySQL está parado, liga no XAMPP
-- "Access denied for user 'root'": seu MySQL tem senha, ajusta a propriedade
-  spring.datasource.password no application.properties
-- Porta 8080 ocupada: fecha o outro programa ou adiciona server.port=8081
-  no application.properties
+- "Communications link failure": o MySQL está parado, liga no XAMPP ou use o perfil local
+- "Access denied for user 'root'": seu MySQL tem senha, defina a variável DB_PASSWORD
+- Porta 8080 ocupada: rode com `-Dspring-boot.run.arguments=--server.port=8081`
+- Para começar do zero no perfil local: apague a pasta `app/data`
