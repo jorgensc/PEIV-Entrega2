@@ -49,7 +49,7 @@ Usuários de demonstração (criados automaticamente quando o banco está vazio)
 | PATCH | `/ocorrencias/{id}` | síndico | Mudar status e responder |
 | GET | `/resumo` | logado | Números da tela inicial (por perfil) |
 
-Fora da API: `GET /actuator/health` (público) devolve `{"status":"UP"}` e é usado pelo Azure e pelo pipeline.
+Fora da API: `GET /actuator/health` (público) devolve `{"status":"UP"}` e é usado pelos scripts do servidor para saber se a aplicação subiu.
 
 ## Regras da reserva
 
@@ -104,16 +104,16 @@ Todos os erros seguem o padrão **Problem Details (RFC 9457)**:
 
 ```bash
 # login
-TOKEN=$(curl -s -X POST https://<app>.azurewebsites.net/api/v1/auth/login \
+TOKEN=$(curl -s -X POST https://<link-do-servidor>/api/v1/auth/login \
   -H "Content-Type: application/json" \
   -d '{"email":"ana.souza@email.com","senha":"morador123"}' | jq -r .token)
 
 # horarios ocupados do salao (area 1) em 12/12/2026
-curl -s "https://<app>.azurewebsites.net/api/v1/reservas/disponibilidade?areaId=1&data=2026-12-12" \
+curl -s "https://<link-do-servidor>/api/v1/reservas/disponibilidade?areaId=1&data=2026-12-12" \
   -H "Authorization: Bearer $TOKEN"
 
 # reservar
-curl -s -X POST https://<app>.azurewebsites.net/api/v1/reservas \
+curl -s -X POST https://<link-do-servidor>/api/v1/reservas \
   -H "Authorization: Bearer $TOKEN" -H "Content-Type: application/json" \
   -d '{"areaId":1,"data":"2026-12-12","horaInicio":"14:00","horaFim":"18:00","observacao":"Aniversário"}'
 ```

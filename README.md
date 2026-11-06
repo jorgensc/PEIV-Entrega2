@@ -4,19 +4,23 @@ Repositório de Práticas Extensionistas IV - UNOESC
 Jorge Luiz do Nascimento
 
 <p align="justify">
-<strong>Introdução</strong>: A gestão de condomínios ainda depende muito de métodos informais, como grupos de mensagens, planilhas e avisos em papel, o que deixa a informação espalhada, dificulta a comunicação entre síndico e moradores e não gera histórico do que acontece no condomínio. <strong>Objetivo</strong>: O JCondo centraliza a administração do condomínio em três frentes: um painel web responsivo para o síndico, um aplicativo mobile no formato PWA para os moradores e uma API REST que liga as duas pontas. O sistema cobre cadastro de moradores, mural de avisos, reserva de áreas comuns sem conflito de horário e registro e acompanhamento de ocorrências. <strong>Metodologia</strong>: A aplicação foi desenvolvida em Java 21 com Spring Boot, em arquitetura de camadas (controller, service, repository e entity), com banco MySQL, painel em Thymeleaf e Bootstrap, app PWA em HTML, CSS e JavaScript com service worker, e API protegida por JWT e documentada com Swagger. A infraestrutura no Microsoft Azure (App Service e Azure Database for MySQL) é descrita como código em Bicep, e o GitHub Actions compila, testa e publica cada alteração aprovada na branch principal. <strong>Resultados esperados</strong>: Um sistema publicado na nuvem, que funciona bem do celular ao computador, pode ser instalado na tela inicial do telefone e continua mostrando os dados mesmo sem internet. <strong>Conclusão</strong>: A separação entre API, painel e app, junto com a automação do build e do deploy, deixa o JCondo pronto para crescer com novos módulos sem mudar a forma de publicar.
+<strong>Introdução</strong>: A gestão de condomínios ainda depende muito de métodos informais, como grupos de mensagens, planilhas e avisos em papel, o que deixa a informação espalhada, dificulta a comunicação entre síndico e moradores e não gera histórico do que acontece no condomínio. <strong>Objetivo</strong>: O JCondo centraliza a administração do condomínio em três frentes: um painel web responsivo para o síndico, um aplicativo mobile no formato PWA para os moradores e uma API REST que liga as duas pontas. O sistema cobre cadastro de moradores, mural de avisos, reserva de áreas comuns sem conflito de horário e registro e acompanhamento de ocorrências. <strong>Metodologia</strong>: A aplicação foi desenvolvida em Java 21 com Spring Boot, em arquitetura de camadas (controller, service, repository e entity), com banco MySQL, painel em Thymeleaf e Bootstrap, app PWA em HTML, CSS e JavaScript com service worker, e API protegida por JWT e documentada com Swagger. A aplicação é hospedada em servidor próprio (self-hosted), com MySQL 8.4 e acesso público em HTTPS pelo Cloudflare Tunnel, sem abrir portas na rede. A montagem do servidor é automatizada por scripts e o GitHub Actions compila, testa e publica cada versão aprovada na branch principal. <strong>Resultados esperados</strong>: Um sistema publicado na internet, que funciona bem do celular ao computador, pode ser instalado na tela inicial do telefone e continua mostrando os dados mesmo sem internet. <strong>Conclusão</strong>: A separação entre API, painel e app, junto com a automação do build e do deploy, deixa o JCondo pronto para crescer com novos módulos sem mudar a forma de publicar.
 </p>
 
-<strong>Palavras-chave</strong>: Gestão condominial. Progressive Web App. API REST. Microsoft Azure.
+<strong>Palavras-chave</strong>: Gestão condominial. Progressive Web App. API REST. Self-hosting.
 
 ## Acesso
 
 | O que | Endereço |
 |---|---|
-| Painel do síndico (web responsivo) | `https://<app>.azurewebsites.net/login` |
-| App do morador (PWA) | `https://<app>.azurewebsites.net/app/` |
-| API (Swagger) | `https://<app>.azurewebsites.net/swagger-ui/index.html` |
-| Health check | `https://<app>.azurewebsites.net/actuator/health` |
+O servidor é self-hosted: o endereço público é gerado pelo Cloudflare Tunnel quando o servidor é ligado (`infra\iniciar.cmd`) e tem o formato `https://<nome>.trycloudflare.com`.
+
+| O que | Caminho |
+|---|---|
+| Painel do síndico (web responsivo) | `/login` |
+| App do morador (PWA) | `/app/` |
+| API (Swagger) | `/swagger-ui/index.html` |
+| Health check | `/actuator/health` |
 
 Usuários de demonstração: síndico `sindico@jcondo.com` / `sindico123` e moradores (por exemplo `ana.souza@email.com`) com a senha `morador123`.
 
@@ -59,9 +63,11 @@ API versionada em `/api/v1`, com autenticação JWT, dois perfis (síndico e mor
 
 <img src="doc/telas/api-swagger.png" width="720">
 
-### 4. Infraestrutura na nuvem
+### 4. Infraestrutura self-hosted
 
-Microsoft Azure (assinatura Azure for Students), toda descrita como código em [`infra/main.bicep`](infra/main.bicep) e criada com [`infra/deploy.ps1`](infra/deploy.ps1): App Service Linux com Java 21 (plano F1), Azure Database for MySQL Flexible Server (B1ms), Log Analytics e Application Insights. A configuração completa (recursos, variáveis de ambiente, rede, segurança, monitoramento, custos e passo a passo) está em [`doc/infraestrutura.md`](doc/infraestrutura.md).
+O JCondo roda em servidor próprio (Windows 11, Java 21 e MySQL 8.4 LTS) e fica acessível na internet em HTTPS pelo **Cloudflare Tunnel**. O túnel faz uma conexão de saída até a Cloudflare, então nenhuma porta é aberta no roteador e o MySQL e a aplicação escutam só em `127.0.0.1`. O custo é zero.
+
+Tudo é automatizado em [`infra/`](infra): `instalar.cmd` monta o servidor, `iniciar.cmd` coloca no ar e mostra o link público, `atualizar.cmd` publica a última versão gerada pelo pipeline, `backup.cmd` faz o dump do banco e `parar.cmd` desliga. A configuração completa (componentes, parâmetros, rede, segurança, CI/CD, operação, custos e limitações) está em [`doc/infraestrutura.md`](doc/infraestrutura.md).
 
 ## Estrutura do repositório
 
@@ -83,9 +89,9 @@ PEIV/
 │   ├── src/test/             testes unitários e de integração da API
 │   ├── database/jcondo.sql   esquema do banco
 │   └── docs/                 manuais de instalação e execução
-├── infra/                    Bicep e scripts de deploy no Azure
+├── infra/                    scripts do servidor self-hosted (instalar, iniciar, atualizar, backup, parar)
 ├── doc/                      PDFs das entregas, diagramas, telas, API e infraestrutura
-└── .github/workflows/        pipeline de CI/CD
+└── .github/workflows/        pipeline de CI (testes) e CD (Release com o .jar)
 ```
 
 ## Como rodar localmente

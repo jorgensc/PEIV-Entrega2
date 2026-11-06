@@ -41,15 +41,17 @@ primeira vez que ela sobe. Se quiser criar na mão, importe o arquivo
 mysql -u root < database/jcondo.sql
 ```
 
-## 4. Azure (só pra publicar na nuvem)
+## 4. Servidor self-hosted (pra deixar online)
 
-1. Ativar o Azure for Students em azure.microsoft.com/free/students com o e-mail da universidade
-2. Instalar o Azure CLI: `winget install Microsoft.AzureCLI`
-3. Fazer login: `az login`
-4. Na raiz do repositório: `.\infra\deploy.ps1`
+Na raiz do repositório:
 
-O passo a passo completo e a configuração de cada recurso estão em
-`doc/infraestrutura.md`.
+```
+infra\instalar.cmd
+```
+
+Ele baixa o MySQL 8.4 e o cloudflared, configura tudo só para acesso local e
+cria o banco, o usuário e as senhas. Depois é só rodar `infra\iniciar.cmd`.
+O passo a passo e a configuração de cada parte estão em `doc/infraestrutura.md`.
 
 ## 5. Conferindo se está tudo pronto
 

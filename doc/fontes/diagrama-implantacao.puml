@@ -12,13 +12,12 @@ skinparam databaseBackgroundColor #E8F5E9
 skinparam databaseBorderColor #2E7D32
 skinparam arrowColor #37474F
 skinparam ArrowFontSize 11
-title Diagrama de Implantação - JCondo v2 (produção no Microsoft Azure)
+title Diagrama de Implantação - JCondo v2 (servidor self-hosted + Cloudflare Tunnel)
 
 node "Celular do morador" <<device>> as cel {
   node "Navegador / PWA instalado" <<executionEnvironment>> as nav1 {
     artifact "App do morador\n/app (index.html, js, css)" <<artifact>> as pwa
     artifact "sw.js" <<service worker>> as sw
-    artifact "manifest.webmanifest" <<artifact>> as man
     database "Cache Storage\n+ localStorage\n(JWT e fila offline)" <<armazenamento local>> as cache
   }
 }
@@ -34,35 +33,38 @@ node "CDN jsDelivr" <<device>> as cdn {
   artifact "Bootstrap 5\nBootstrap Icons" <<artifact>> as bs
 }
 
+node "Cloudflare (borda São Paulo)" <<cloud>> as cf {
+  node "Cloudflare Tunnel\n<nome>.trycloudflare.com" <<executionEnvironment>> as edge
+}
+
 node "GitHub" <<cloud>> as gh {
   node "GitHub Actions runner\n(ubuntu-latest)" <<executionEnvironment>> as runner {
     artifact "ci-cd.yml" <<workflow>> as wf
   }
+  artifact "Release v2.0.N\njcondo.jar" <<artifact>> as release
 }
 
-node "Microsoft Azure - grupo rg-jcondo" <<cloud>> as azure {
-  node "Azure App Service\nplano F1 Linux" <<device>> as appsvc {
-    artifact "Application settings\nDB_URL, DB_PASSWORD,\nJWT_SECRET, TZ" <<configuration>> as cfg
-    node "Java SE 21" <<executionEnvironment>> as jre {
-      node "Spring Boot 3.5 / Tomcat" <<executionEnvironment>> as boot {
-        artifact "jcondo.jar\n(painel + PWA + API /api/v1)" <<artifact>> as jar
-      }
+node "Servidor self-hosted\nnotebook Windows 11 (i7, 16 GB)" <<device>> as srv {
+  node "cloudflared" <<executionEnvironment>> as cfd
+  artifact "config.json\nsenhas e JWT_SECRET" <<configuration>> as cfg
+  node "Java SE 21" <<executionEnvironment>> as jre {
+    node "Spring Boot 3.5 / Tomcat\n127.0.0.1:8080" <<executionEnvironment>> as boot {
+      artifact "jcondo.jar\n(painel + PWA + API /api/v1)" <<artifact>> as jar
     }
   }
-  node "Azure Database for MySQL\nFlexible Server B1ms" <<device>> as mysqlsrv {
-    node "MySQL 8.0" <<executionEnvironment>> as mysql {
-      database "jcondo\n(usuarios, moradores, avisos,\nareas_comuns, reservas, ocorrencias)" <<schema>> as banco
-    }
+  node "MySQL 8.4 LTS\n127.0.0.1:3306" <<executionEnvironment>> as mysql {
+    database "jcondo\n(usuarios, moradores, avisos,\nareas_comuns, reservas, ocorrencias)" <<schema>> as banco
   }
-  node "Application Insights\n+ Log Analytics" <<device>> as ai
 }
 
-nav1 -- boot : <<HTTPS/443>>\nREST JSON /api/v1\nBearer JWT
-nav2 -- boot : <<HTTPS/443>>\npáginas + sessão
+nav1 -- edge : <<HTTPS/443>>\nREST JSON /api/v1\nBearer JWT
+nav2 -- edge : <<HTTPS/443>>\npáginas + sessão
 nav2 -- cdn : <<HTTPS/443>>\nCSS/JS
-boot -- mysql : <<JDBC/TCP 3306>>\nTLS obrigatório
-boot -- ai : <<HTTPS>>\ntelemetria
-runner -- appsvc : <<HTTPS>>\ndeploy do .jar\n+ health check
+cfd -- edge : <<QUIC/HTTP2 saída>>\ntúnel criptografado\nsem porta aberta
+cfd -- boot : <<HTTP>>\nlocalhost
+boot -- mysql : <<JDBC/TCP>>\nlocalhost
+runner ..> release : <<publica>>
+srv ..> release : <<HTTPS>>\natualizar.ps1\nbaixa o .jar
 cfg ..> boot : <<configura>>
 sw ..> cache : <<guarda>>
 @enduml

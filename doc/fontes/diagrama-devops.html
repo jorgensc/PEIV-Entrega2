@@ -22,7 +22,7 @@
 </head>
 <body>
 <h1>Diagrama de Arquitetura DevOps - JCondo v2</h1>
-<p class="sub">ciclo contínuo: planejar, codificar, versionar, integrar (CI), provisionar (IaC), entregar (CD), operar e monitorar</p>
+<p class="sub">ciclo contínuo: planejar, codificar, versionar, integrar (CI), provisionar o servidor, entregar (CD), operar e monitorar</p>
 
 <!-- linha de cima -->
 <div class="etapa" style="left:30px;top:100px;width:330px;height:470px;border-color:#8e24aa;background:#f3e5f5">
@@ -76,46 +76,47 @@
 <div class="etapa" style="left:30px;top:630px;width:400px;height:470px;border-color:#d81b60;background:#fce4ec">
   <h2 style="background:#d81b60">8. MONITORAR</h2>
   <div class="corpo">
-    <div class="caixa"><b>Application Insights</b>requisições, tempo de resposta,<br>falhas e Live Metrics</div>
-    <div class="caixa"><b>Log stream + Log Analytics</b>logs do Spring Boot (30 dias)</div>
-    <div class="caixa"><b>/actuator/health</b>usado pelo pipeline e pelo deploy</div>
-    <div class="caixa"><b>Backup do MySQL</b>automático, 7 dias de restauração</div>
+    <div class="caixa"><b>/actuator/health</b>status da aplicação e do banco<br>conferido pelos scripts</div>
+    <div class="caixa"><b>Logs</b>app.log (Spring Boot), mysql-erros.log,<br>tunel.log (conexões do túnel)</div>
+    <div class="caixa"><b>Métricas do túnel</b>cloudflared em 127.0.0.1:20241</div>
+    <div class="caixa"><b>backup.cmd</b>mysqldump do banco jcondo<br>(7 cópias mais recentes)</div>
   </div>
 </div>
 
 <div class="etapa" style="left:460px;top:630px;width:560px;height:470px;border-color:#039be5;background:#e1f5fe">
-  <h2 style="background:#039be5">7. OPERAR - Microsoft Azure (rg-jcondo)</h2>
+  <h2 style="background:#039be5">7. OPERAR - servidor self-hosted</h2>
   <div class="corpo">
-    <div class="caixa"><b>Síndico e moradores</b>navegador e PWA instalado (HTTPS)</div>
-    <div class="seta">▼</div>
-    <div class="caixa"><b>Azure App Service F1 Linux</b>Java SE 21 · jcondo.jar<br>painel /login · PWA /app · API /api/v1</div>
-    <div class="seta">▼ JDBC + TLS</div>
-    <div class="caixa"><b>Azure Database for MySQL</b>Flexible Server B1ms · banco jcondo</div>
-    <div class="caixa nota"><b>Application settings</b>DB_URL, DB_PASSWORD, JWT_SECRET, TZ</div>
+    <div class="caixa"><b>Síndico e moradores</b>navegador e PWA instalado</div>
+    <div class="seta">▼ HTTPS</div>
+    <div class="caixa"><b>Cloudflare Tunnel</b>https://&lt;nome&gt;.trycloudflare.com<br>conexão de saída, sem porta aberta</div>
+    <div class="seta">▼ 127.0.0.1:8080</div>
+    <div class="caixa"><b>JCondo (Java 21)</b>painel /login · PWA /app · API /api/v1</div>
+    <div class="seta">▼ 127.0.0.1:3306</div>
+    <div class="caixa"><b>MySQL 8.4 LTS</b>banco jcondo · usuário só com acesso a ele</div>
   </div>
 </div>
 
 <div class="etapa" style="left:1050px;top:630px;width:440px;height:470px;border-color:#fb8c00;background:#fff3e0">
   <h2 style="background:#fb8c00">6. ENTREGA CONTÍNUA (CD)</h2>
   <div class="corpo">
-    <div class="caixa"><b>job deploy</b>só em push na main<br>(environment: producao)</div>
+    <div class="caixa"><b>job release</b>só em push na main, depois do CI</div>
     <div class="seta">▼</div>
-    <div class="caixa"><b>autenticação no Azure</b>secret AZURE_WEBAPP_PUBLISH_PROFILE<br>variable AZURE_WEBAPP_NAME</div>
+    <div class="caixa"><b>GitHub Release v2.0.N</b>jcondo.jar testado anexado<br>(softprops/action-gh-release)</div>
     <div class="seta">▼</div>
-    <div class="caixa"><b>azure/webapps-deploy</b>publica o jcondo.jar</div>
+    <div class="caixa"><b>atualizar.cmd no servidor</b>baixa a última Release (deploy pull),<br>guarda a versão anterior e troca</div>
     <div class="seta">▼</div>
-    <div class="caixa"><b>smoke test</b>espera /actuator/health = UP<br>senão o pipeline falha</div>
+    <div class="caixa"><b>health check</b>só termina quando /actuator/health = UP</div>
   </div>
 </div>
 
 <div class="etapa" style="left:1520px;top:630px;width:450px;height:470px;border-color:#6d4c41;background:#efebe9">
-  <h2 style="background:#6d4c41">5. INFRAESTRUTURA COMO CÓDIGO</h2>
+  <h2 style="background:#6d4c41">5. PROVISIONAR O SERVIDOR</h2>
   <div class="corpo">
-    <div class="caixa"><b>infra/main.bicep</b>App Service, MySQL, banco, firewall,<br>Log Analytics, Application Insights</div>
+    <div class="caixa"><b>instalar.cmd</b>baixa MySQL 8.4 e cloudflared,<br>cria banco, usuário e segredos</div>
     <div class="seta">▼</div>
-    <div class="caixa"><b>infra/deploy.ps1</b>Azure CLI: lê as regiões liberadas,<br>gera segredos, cria tudo e publica</div>
+    <div class="caixa"><b>iniciar.cmd</b>sobe MySQL, aplicação e túnel<br>e mostra o link público</div>
     <div class="seta">▼</div>
-    <div class="caixa nota"><b>ambiente reproduzível</b>recria do zero com um comando<br>remover.ps1 apaga tudo</div>
+    <div class="caixa nota"><b>ambiente reproduzível</b>monta o servidor do zero em<br>qualquer Windows com Java 21</div>
   </div>
 </div>
 
@@ -134,7 +135,7 @@
   <path d="M1050 860 L1022 860" stroke="#37474f" stroke-width="2.5" fill="none" marker-end="url(#p)"/>
   <text x="1021" y="846" font-size="12" fill="#37474f">deploy</text>
   <path d="M1520 750 L1505 750 L1505 1120 L740 1120 L740 1102" stroke="#6d4c41" stroke-width="2" stroke-dasharray="7 5" fill="none" marker-end="url(#p)"/>
-  <text x="1000" y="1114" font-size="13" fill="#6d4c41">provisiona os recursos</text>
+  <text x="1000" y="1114" font-size="13" fill="#6d4c41">prepara e liga o servidor</text>
   <path d="M460 860 L432 860" stroke="#37474f" stroke-width="2.5" fill="none" marker-end="url(#p)"/>
   <text x="433" y="846" font-size="12" fill="#37474f">logs</text>
   <!-- feedback -->
@@ -147,7 +148,7 @@
 <div class="legenda">
   <span><svg width="60" height="14" style="position:static"><path d="M0 7 L50 7" stroke="#37474f" stroke-width="2.5" marker-end="url(#p)"/></svg>fluxo principal</span>
   <span><svg width="60" height="14" style="position:static"><path d="M0 7 L50 7" stroke="#c62828" stroke-width="2.5" stroke-dasharray="8 6" marker-end="url(#v)"/></svg>feedback (volta ao início do ciclo)</span>
-  <span><svg width="60" height="14" style="position:static"><path d="M0 7 L50 7" stroke="#6d4c41" stroke-width="2" stroke-dasharray="7 5"/></svg>infraestrutura como código</span>
+  <span><svg width="60" height="14" style="position:static"><path d="M0 7 L50 7" stroke="#6d4c41" stroke-width="2" stroke-dasharray="7 5"/></svg>scripts do servidor</span>
 </div>
 </body>
 </html>

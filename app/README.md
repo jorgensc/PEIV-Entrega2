@@ -48,7 +48,7 @@ Depois abrir:
 
 Na primeira subida, com o banco vazio, a aplicação cria as tabelas e carrega dados de demonstração (síndico, 5 moradores, 4 áreas, avisos, reservas e ocorrências). Para não carregar, usar `SEED_DEMO=false`.
 
-> O PWA só registra o service worker em `localhost` ou em HTTPS. Para testar no celular, usar o endereço do Azure.
+> O PWA só registra o service worker em `localhost` ou em HTTPS. Para testar no celular, usar o link público do servidor (`infra\iniciar.cmd`).
 
 ## Configuração
 

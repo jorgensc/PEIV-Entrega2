@@ -19,5 +19,5 @@ Thumbs.db
 # banco H2 do perfil local
 app/data/
 
-# segredos e perfil de publicacao gerados pelo infra/deploy.ps1
+# os segredos do servidor ficam fora do repositorio (em JCondoServidor\config.json)
 infra/*.local.*
